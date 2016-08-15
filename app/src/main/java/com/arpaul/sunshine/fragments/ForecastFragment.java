@@ -1,4 +1,4 @@
-package com.example.arpaul.sunshine.Pinch;
+package com.arpaul.sunshine.fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -10,10 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.example.arpaul.sunshine.Adapter.WeatherAdapter;
-import com.example.arpaul.sunshine.DataObjects.WeatherDataDO;
-import com.example.arpaul.sunshine.R;
-import com.example.arpaul.sunshine.WebServices.WeatherLoader;
+import com.arpaul.sunshine.adapter.WeatherAdapter;
+import com.arpaul.sunshine.dataObjects.WeatherDataDO;
+import com.arpaul.sunshine.R;
+import com.arpaul.sunshine.webServices.WeatherLoader;
 
 import java.util.ArrayList;
 
@@ -53,7 +53,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoaderReset(Loader<ArrayList<WeatherDataDO>> loader) {
-        adapter.refresh(new ArrayList<WeatherDataDO>());
+        //adapter.refresh(new ArrayList<WeatherDataDO>());
     }
 
     private void initializeControls(View rootView){

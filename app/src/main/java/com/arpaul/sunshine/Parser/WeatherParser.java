@@ -1,13 +1,14 @@
-package com.example.arpaul.sunshine.Parser;
+package com.arpaul.sunshine.parser;
 
-import com.example.arpaul.sunshine.DataObjects.WeatherDataDO;
-import com.example.arpaul.sunshine.DataObjects.WeatherDescriptionDO;
+import com.arpaul.sunshine.dataObjects.WeatherDataDO;
+import com.arpaul.sunshine.dataObjects.WeatherDescriptionDO;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 /**
  * Created by ARPaul on 05-04-2016.
@@ -25,7 +26,10 @@ public class WeatherParser {
 
                 objMovieDetailDO = new WeatherDataDO();
 
-                objMovieDetailDO.savedt(body.getLong(WeatherDataDO.TAG_DT));
+                Calendar cal = Calendar.getInstance();
+                cal.set(Calendar.DAY_OF_MONTH,cal.get(Calendar.DAY_OF_MONTH)+i);
+                objMovieDetailDO.savedt(cal.getTimeInMillis());
+                //objMovieDetailDO.savedt(body.getLong(WeatherDataDO.TAG_DT));
                 JSONObject tempObject = body.getJSONObject(WeatherDataDO.TAG_TEMP);
 
                     objMovieDetailDO.saveTemperatureDay(tempObject.getDouble(WeatherDataDO.TAG_DAY));

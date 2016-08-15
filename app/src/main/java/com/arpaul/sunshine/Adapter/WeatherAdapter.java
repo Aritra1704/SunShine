@@ -1,4 +1,4 @@
-package com.example.arpaul.sunshine.Adapter;
+package com.arpaul.sunshine.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
@@ -8,8 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.arpaul.sunshine.DataObjects.WeatherDataDO;
-import com.example.arpaul.sunshine.R;
+import com.arpaul.sunshine.dataObjects.WeatherDataDO;
+import com.arpaul.sunshine.R;
+import com.arpaul.utilitieslib.CalendarUtils;
 
 import java.util.ArrayList;
 
@@ -40,7 +41,12 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final WeatherDataDO objWeatherDO = arrWeatherDetails.get(position);
-        holder.tvWeatherCondition.setText(objWeatherDO.getTemperatureDay());
+        String date = CalendarUtils.getDateTimefromTimemillis(objWeatherDO.getdt())+" ";
+        String weather = "";
+        if(objWeatherDO.arrWeatheDescp != null && objWeatherDO.arrWeatheDescp.size() > 0)
+            weather = objWeatherDO.arrWeatheDescp.get(0).getDescription()+" ";
+        String temp = objWeatherDO.getTemperatureDay()+"/"+objWeatherDO.getTemperatureMax();
+        holder.tvWeatherCondition.setText(date+weather+temp);
 
     }
 

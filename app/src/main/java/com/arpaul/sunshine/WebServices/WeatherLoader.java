@@ -1,22 +1,17 @@
-package com.example.arpaul.sunshine.WebServices;
+package com.arpaul.sunshine.webServices;
 
 import android.content.Context;
 import android.support.v4.content.AsyncTaskLoader;
-import android.util.Log;
 
-import com.example.arpaul.sunshine.DataObjects.WeatherDataDO;
-import com.example.arpaul.sunshine.Parser.WeatherParser;
-import com.example.arpaul.sunshine.R;
-
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.arpaul.sunshine.dataObjects.WeatherDataDO;
+import com.arpaul.sunshine.parser.WeatherParser;
+import com.arpaul.sunshine.R;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
-import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 

@@ -1,4 +1,4 @@
-package com.example.arpaul.sunshine.DataObjects;
+package com.arpaul.sunshine.dataObjects;
 
 /**
  * Created by ARPaul on 06-04-2016.
@@ -16,6 +16,10 @@ public class WeatherDescriptionDO {
     }
     public void saveIcon(String temp){
         icon = temp;
+    }
+
+    public String getDescription(){
+        return description;
     }
 
     public static final String TAG_MAIN = "main";

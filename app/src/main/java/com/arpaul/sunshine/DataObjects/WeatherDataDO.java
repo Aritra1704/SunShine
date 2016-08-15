@@ -1,4 +1,4 @@
-package com.example.arpaul.sunshine.DataObjects;
+package com.arpaul.sunshine.dataObjects;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -67,7 +67,16 @@ public class WeatherDataDO implements Serializable {
     }
 
     public String getTemperatureDay(){
-        return ""+convertTempFromKelvin(temperatureDay);
+        return ""+temperatureDay;
+    }
+    public long getdt(){
+        return dt;
+    }
+    public String getTemperatureMin(){
+        return ""+temperatureMin;
+    }
+    public String getTemperatureMax(){
+        return ""+temperatureMax;
     }
 
     private double convertTempFromKelvin(double temperature){

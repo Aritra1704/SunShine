@@ -1,4 +1,4 @@
-package com.example.arpaul.sunshine;
+package com.arpaul.sunshine;
 
 import org.junit.Test;
 
