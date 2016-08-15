@@ -1,28 +1,48 @@
 package com.arpaul.sunshine.dataObjects;
 
+import java.io.Serializable;
+
 /**
  * Created by ARPaul on 06-04-2016.
  */
-public class WeatherDescriptionDO {
+public class WeatherDescriptionDO implements Serializable {
     private String main = "";
     private String description = "";
     private String icon = "";
 
-    public void saveMain(String temp){
-        main = temp;
-    }
-    public void saveDescription(String temp){
-        description = temp;
-    }
-    public void saveIcon(String temp){
-        icon = temp;
+    public void saveData(Object data, WEATHER_DESC_DATA type){
+        switch (type){
+            case TYPE_DESCRIPTION:
+                description = (String) data;
+                break;
+            case TYPE_ICON:
+                icon = (String) data;
+                break;
+            case TYPE_MAIN:
+                main = (String)data;
+                break;
+        }
     }
 
-    public String getDescription(){
-        return description;
+    public Object getData(WEATHER_DESC_DATA type){
+        switch (type){
+            case TYPE_DESCRIPTION:
+                return description;
+            case TYPE_ICON:
+                return icon;
+            case TYPE_MAIN:
+            default:
+                return main;
+        }
     }
 
     public static final String TAG_MAIN = "main";
     public static final String TAG_DESCRIPTION = "description";
     public static final String TAG_ICON = "icon";
+
+    public enum WEATHER_DESC_DATA {
+        TYPE_DESCRIPTION,
+        TYPE_ICON,
+        TYPE_MAIN
+    }
 }

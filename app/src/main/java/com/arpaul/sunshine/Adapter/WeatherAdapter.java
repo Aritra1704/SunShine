@@ -1,6 +1,7 @@
 package com.arpaul.sunshine.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -8,8 +9,11 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.arpaul.sunshine.activity.WeatherDetailActivity;
+import com.arpaul.sunshine.common.AppConstants;
 import com.arpaul.sunshine.dataObjects.WeatherDataDO;
 import com.arpaul.sunshine.R;
+import com.arpaul.sunshine.dataObjects.WeatherDescriptionDO;
 import com.arpaul.utilitieslib.CalendarUtils;
 
 import java.util.ArrayList;
@@ -34,20 +38,28 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.weather_detail, parent, false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.adapter_weather_detail, parent, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final WeatherDataDO objWeatherDO = arrWeatherDetails.get(position);
-        String date = CalendarUtils.getDateTimefromTimemillis(objWeatherDO.getdt())+" ";
+        String date = CalendarUtils.getDatefromTimeinMmiliesPattern((long) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE), AppConstants.DAY_PATTERN_WEATHER_LIST)+" ";
         String weather = "";
         if(objWeatherDO.arrWeatheDescp != null && objWeatherDO.arrWeatheDescp.size() > 0)
-            weather = objWeatherDO.arrWeatheDescp.get(0).getDescription()+" ";
-        String temp = objWeatherDO.getTemperatureDay()+"/"+objWeatherDO.getTemperatureMax();
+            weather = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION);
+        String temp = (double) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP)+"/"+(double) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MAX);
         holder.tvWeatherCondition.setText(date+weather+temp);
 
+        holder.mView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(context, WeatherDetailActivity.class);
+                intent.putExtra("WEATHER_DETAIL", objWeatherDO);
+                context.startActivity(intent);
+            }
+        });
     }
 
     @Override

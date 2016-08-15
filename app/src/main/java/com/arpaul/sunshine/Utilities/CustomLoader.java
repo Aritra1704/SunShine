@@ -1,4 +1,4 @@
-package com.arpaul.sunshine.Utilities;
+package com.arpaul.sunshine.utilities;
 
 import android.app.Activity;
 import android.app.ProgressDialog;

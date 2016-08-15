@@ -25,58 +25,82 @@ public class WeatherDataDO implements Serializable {
 
     public ArrayList<WeatherDescriptionDO> arrWeatheDescp = new ArrayList<>();
 
-    public void savedt(long dtvalue){
-        dt = dtvalue;
-    }
-    public void saveTemperatureDay(double temp){
-        temperatureDay = temp;
+    public void saveData(Object data, WEATHERDATA type){
+        switch (type){
+            case TYPE_DATE:
+                dt = (long) data;
+                break;
+            case TYPE_TEMP:
+                temperatureDay = (double) data;
+                break;
+            case TYPE_TEMP_MIN:
+                temperatureMin = (double)data;
+                break;
+            case TYPE_TEMP_MAX:
+                temperatureMax = (double)data;
+                break;
+            case TYPE_TEMP_NIGHT:
+                temperatureNight = (double)data;
+                break;
+            case TYPE_TEMP_EVE:
+                temperatureEve = (double)data;
+                break;
+            case TYPE_TEMP_MORN:
+                temperatureMorn = (double)data;
+                break;
+            case TYPE_PRESSURE:
+                pressure = (double)data;
+                break;
+            case TYPE_HUMIDITY:
+                humidity = (double)data;
+                break;
+            case TYPE_SPEED:
+                speed = (double)data;
+                break;
+
+            case TYPE_DEG:
+                deg = (double)data;
+                break;
+            case TYPE_CLOUDS:
+                clouds = (double)data;
+                break;
+            case TYPE_RAIN:
+                rain = (double)data;
+                break;
+        }
     }
 
-    public void saveTemperatureMin(double temp){
-        temperatureMin = temp;
-    }
-    public void saveTemperatureMax(double temp){
-        temperatureMax = temp;
-    }
-    public void saveTemperatureNight(double temp){
-        temperatureNight = temp;
-    }
-    public void saveTemperatureEve(double temp){
-        temperatureEve = temp;
-    }
-    public void saveTemperatureMorn(double temp){
-        temperatureMorn = temp;
-    }
-    public void savePressure(double temp){
-        pressure = temp;
-    }
-    public void saveHumidity(double temp){
-        humidity = temp;
-    }
-    public void saveSpeed(double temp){
-        speed = temp;
-    }
-    public void saveDeg(double temp){
-        deg = temp;
-    }
-    public void saveClouds(double temp){
-        clouds = temp;
-    }
-    public void saveRain(double temp){
-        rain = temp;
-    }
-
-    public String getTemperatureDay(){
-        return ""+temperatureDay;
-    }
-    public long getdt(){
-        return dt;
-    }
-    public String getTemperatureMin(){
-        return ""+temperatureMin;
-    }
-    public String getTemperatureMax(){
-        return ""+temperatureMax;
+    public Object getData(WEATHERDATA type){
+        switch (type){
+            case TYPE_DATE:
+                return dt;
+            case TYPE_TEMP:
+                return temperatureDay;
+            case TYPE_TEMP_MIN:
+                return temperatureMin;
+            case TYPE_TEMP_MAX:
+                return temperatureMax;
+            case TYPE_TEMP_NIGHT:
+                return temperatureNight;
+            case TYPE_TEMP_EVE:
+                return temperatureEve;
+            case TYPE_TEMP_MORN:
+                return temperatureMorn;
+            case TYPE_PRESSURE:
+                return pressure;
+            case TYPE_HUMIDITY:
+                return humidity;
+            case TYPE_SPEED:
+                return speed;
+            case TYPE_DEG:
+                return deg;
+            case TYPE_CLOUDS:
+                return clouds;
+            case TYPE_RAIN:
+                return rain;
+            default:
+                return dt;
+        }
     }
 
     private double convertTempFromKelvin(double temperature){
@@ -100,4 +124,21 @@ public class WeatherDataDO implements Serializable {
     public static final String TAG_DEG = "deg";
     public static final String TAG_CLOUDS = "clouds";
     public static final String TAG_RAIN = "rain";
+
+    public enum WEATHERDATA {
+        TYPE_DATE,
+        TYPE_TEMP,
+        TYPE_DAY,
+        TYPE_TEMP_MIN,
+        TYPE_TEMP_MAX,
+        TYPE_TEMP_NIGHT,
+        TYPE_TEMP_EVE,
+        TYPE_TEMP_MORN,
+        TYPE_PRESSURE,
+        TYPE_HUMIDITY,
+        TYPE_SPEED,
+        TYPE_DEG,
+        TYPE_CLOUDS,
+        TYPE_RAIN
+    }
 }
