@@ -38,6 +38,13 @@ public class WeatherLoader extends AsyncTaskLoader {
     }
 
     private String getURL(){
-        return "http://api.openweathermap.org/data/2.5/forecast/daily?lat=35&lon=139&mode=json&units=metric&cnt=7&APPID="+getContext().getResources().getString(R.string.api_key);
+        return ParamBuilder.getDailyForecastParam(WebServiceConstant.URL_OPENWEATHERMAP+WebServiceConstant.URL_DAILY_FORECAST,
+                "35",
+                "139",
+                "json",
+                "metric",
+                "7",
+                getContext().getResources().getString(R.string.api_key));
+//        return "lat=35&lon=139&mode=json&units=metric&cnt=7&APPID="+getContext().getResources().getString(R.string.api_key);
     }
 }

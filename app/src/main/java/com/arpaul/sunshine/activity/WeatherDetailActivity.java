@@ -36,7 +36,7 @@ public class WeatherDetailActivity extends BaseActivity {
     }
 
     private void bindControls(){
-        tvDayTitle.setText(CalendarUtils.getDatefromTimeinMmiliesPattern((long) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE), CalendarUtils.WEEKNAME_FORMAT));
+        tvDayTitle.setText(CalendarUtils.getDatefromTimeinMmiliesPattern((long) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE), AppConstants.DATE_PATTERN_WEEKNAME_FORMAT));
         tvDayDate.setText(CalendarUtils.getDatefromTimeinMmiliesPattern((long) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE), AppConstants.DATE_PATTERN_WEATHER_DETAIL));
         tvDayTempMax.setText((double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MAX) + "");
         tvDayTempMin.setText((double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MIN) + "");

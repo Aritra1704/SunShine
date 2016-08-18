@@ -48,20 +48,20 @@ public class WeatherParser {
                         objWeatherDO.saveData(tempObject.getDouble(WeatherDataDO.TAG_TEMP_EVE), WeatherDataDO.WEATHERDATA.TYPE_TEMP_EVE);
                     if(JSONUtils.hasJSONtag(tempObject, WeatherDataDO.TAG_TEMP_MORN))
                         objWeatherDO.saveData(tempObject.getDouble(WeatherDataDO.TAG_TEMP_MORN), WeatherDataDO.WEATHERDATA.TYPE_TEMP_MORN);
-                    if(JSONUtils.hasJSONtag(tempObject, WeatherDataDO.TAG_PRESSURE))
-                        objWeatherDO.saveData(tempObject.getDouble(WeatherDataDO.TAG_PRESSURE), WeatherDataDO.WEATHERDATA.TYPE_PRESSURE);
-                    if(JSONUtils.hasJSONtag(tempObject, WeatherDataDO.TAG_HUMIDITY))
-                        objWeatherDO.saveData(tempObject.getDouble(WeatherDataDO.TAG_HUMIDITY), WeatherDataDO.WEATHERDATA.TYPE_HUMIDITY);
-
-                    if(JSONUtils.hasJSONtag(tempObject, WeatherDataDO.TAG_SPEED))
-                        objWeatherDO.saveData(tempObject.getDouble(WeatherDataDO.TAG_SPEED), WeatherDataDO.WEATHERDATA.TYPE_SPEED);
-                    if(JSONUtils.hasJSONtag(tempObject, WeatherDataDO.TAG_DEG))
-                        objWeatherDO.saveData(tempObject.getDouble(WeatherDataDO.TAG_DEG), WeatherDataDO.WEATHERDATA.TYPE_DEG);
-                    if(JSONUtils.hasJSONtag(tempObject, WeatherDataDO.TAG_CLOUDS))
-                        objWeatherDO.saveData(tempObject.getDouble(WeatherDataDO.TAG_CLOUDS), WeatherDataDO.WEATHERDATA.TYPE_CLOUDS);
-                    if(JSONUtils.hasJSONtag(tempObject, WeatherDataDO.TAG_CLOUDS))
-                        objWeatherDO.saveData(tempObject.getDouble(WeatherDataDO.TAG_RAIN), WeatherDataDO.WEATHERDATA.TYPE_RAIN);
                 }
+
+                if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_PRESSURE))
+                    objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_PRESSURE), WeatherDataDO.WEATHERDATA.TYPE_PRESSURE);
+                if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_HUMIDITY))
+                    objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_HUMIDITY), WeatherDataDO.WEATHERDATA.TYPE_HUMIDITY);
+                if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_SPEED))
+                    objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_SPEED), WeatherDataDO.WEATHERDATA.TYPE_SPEED);
+                if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_DEG))
+                    objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_DEG), WeatherDataDO.WEATHERDATA.TYPE_DEG);
+                if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_CLOUDS))
+                    objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_CLOUDS), WeatherDataDO.WEATHERDATA.TYPE_CLOUDS);
+                if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_RAIN))
+                    objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_RAIN), WeatherDataDO.WEATHERDATA.TYPE_RAIN);
 
                 JSONArray weatherresult = body.getJSONArray(WeatherDataDO.TAG_WEATHER);
                 for (int j = 0; j < weatherresult.length(); j++) {

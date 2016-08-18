@@ -15,7 +15,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:paddingLeft="@dimen/margin_10">
 
             <TextView
                 android:id="@+id/tvDayTitle"
@@ -33,12 +34,14 @@
                 android:id="@+id/tvDayTempMax"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_10"
                 android:textSize="@dimen/textsize_35"/>
 
             <TextView
                 android:id="@+id/tvDayTempMin"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:paddingLeft="@dimen/margin_10"
                 android:textSize="@dimen/textsize_30"/>
 
         </LinearLayout>
@@ -53,11 +56,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_20"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="HUMIDTY: "
             android:textSize="@dimen/textsize_25"/>
 
@@ -71,11 +76,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="WIND: "
             android:textSize="@dimen/textsize_25"/>
 
@@ -89,11 +96,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/margin_10"
         android:orientation="horizontal">
 
         <TextView
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:text="PRESSURE: "
             android:textSize="@dimen/textsize_25"/>
 
