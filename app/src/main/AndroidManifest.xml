@@ -20,6 +20,13 @@
 
         <activity android:name=".activity.WeatherDetailActivity">
         </activity>
+
+        <provider
+            android:name=".dataAccess.ContentProviderHelper"
+            android:authorities="com.arpaul.sunshine.dataAccess.ContentProviderHelper"
+            android:exported="false"
+            android:syncable="true">
+        </provider>
     </application>
 
 </manifest>

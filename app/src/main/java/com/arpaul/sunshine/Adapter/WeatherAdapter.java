@@ -45,7 +45,7 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final WeatherDataDO objWeatherDO = arrWeatherDetails.get(position);
-        String date = CalendarUtils.getDatefromTimeinMmiliesPattern((long) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE), AppConstants.DAY_PATTERN_WEATHER_LIST)+" ";
+        String date = CalendarUtils.getDatefromTimeinMmiliesPattern((long) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS), AppConstants.DAY_PATTERN_WEATHER_LIST)+" ";
         String weather = "";
         if(objWeatherDO.arrWeatheDescp != null && objWeatherDO.arrWeatheDescp.size() > 0)
             weather = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION);

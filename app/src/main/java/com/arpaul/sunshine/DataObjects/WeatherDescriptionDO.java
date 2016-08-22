@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * Created by ARPaul on 06-04-2016.
  */
-public class WeatherDescriptionDO implements Serializable {
+public class WeatherDescriptionDO extends BaseDO {
     private String main = "";
     private String description = "";
     private String icon = "";

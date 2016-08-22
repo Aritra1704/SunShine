@@ -55,7 +55,7 @@ public class WeatherParser {
                 if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_HUMIDITY))
                     objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_HUMIDITY), WeatherDataDO.WEATHERDATA.TYPE_HUMIDITY);
                 if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_SPEED))
-                    objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_SPEED), WeatherDataDO.WEATHERDATA.TYPE_SPEED);
+                    objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_SPEED), WeatherDataDO.WEATHERDATA.TYPE_WIND);
                 if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_DEG))
                     objWeatherDO.saveData(body.getDouble(WeatherDataDO.TAG_DEG), WeatherDataDO.WEATHERDATA.TYPE_DEG);
                 if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_CLOUDS))

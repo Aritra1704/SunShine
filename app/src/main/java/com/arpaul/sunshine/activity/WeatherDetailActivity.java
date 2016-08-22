@@ -42,7 +42,7 @@ public class WeatherDetailActivity extends BaseActivity {
         tvDayTempMin.setText((double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MIN) + "");
 
         tvDayHumidity.setText((double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_HUMIDITY) + "");
-        tvDayWind.setText((double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_SPEED) + "");
+        tvDayWind.setText((double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_WIND) + "");
         tvDayPressure.setText((double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_PRESSURE) + "");
     }
 

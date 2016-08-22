@@ -1,14 +1,14 @@
 package com.arpaul.sunshine.dataObjects;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  * Created by ARPaul on 04-04-2016.
  */
-public class WeatherDataDO implements Serializable {
+public class WeatherDataDO extends BaseDO {
 
     private long dt = 0;
+    private String date = "";
     private double temperatureDay = 0;
     private double temperatureMin = 0;
     private double temperatureMax = 0;
@@ -28,6 +28,9 @@ public class WeatherDataDO implements Serializable {
     public void saveData(Object data, WEATHERDATA type){
         switch (type){
             case TYPE_DATE:
+                date = (String) data;
+                break;
+            case TYPE_DATE_MILIS:
                 dt = (long) data;
                 break;
             case TYPE_TEMP:
@@ -54,10 +57,9 @@ public class WeatherDataDO implements Serializable {
             case TYPE_HUMIDITY:
                 humidity = (double)data;
                 break;
-            case TYPE_SPEED:
+            case TYPE_WIND:
                 speed = (double)data;
                 break;
-
             case TYPE_DEG:
                 deg = (double)data;
                 break;
@@ -73,6 +75,8 @@ public class WeatherDataDO implements Serializable {
     public Object getData(WEATHERDATA type){
         switch (type){
             case TYPE_DATE:
+                return date;
+            case TYPE_DATE_MILIS:
                 return dt;
             case TYPE_TEMP:
                 return temperatureDay;
@@ -90,7 +94,7 @@ public class WeatherDataDO implements Serializable {
                 return pressure;
             case TYPE_HUMIDITY:
                 return humidity;
-            case TYPE_SPEED:
+            case TYPE_WIND:
                 return speed;
             case TYPE_DEG:
                 return deg;
@@ -127,6 +131,7 @@ public class WeatherDataDO implements Serializable {
 
     public enum WEATHERDATA {
         TYPE_DATE,
+        TYPE_DATE_MILIS,
         TYPE_TEMP,
         TYPE_DAY,
         TYPE_TEMP_MIN,
@@ -136,9 +141,26 @@ public class WeatherDataDO implements Serializable {
         TYPE_TEMP_MORN,
         TYPE_PRESSURE,
         TYPE_HUMIDITY,
-        TYPE_SPEED,
+        TYPE_WIND,
         TYPE_DEG,
         TYPE_CLOUDS,
         TYPE_RAIN
     }
+
+    public static final String WEATHER_ID       = "WEATHER_ID";
+    public static final String LOCATION_ID      = "LOCATION_ID";
+    public static final String DATE             = "DATE";
+    public static final String DATE_MILLIS      = "DATE_MILLIS";
+    public static final String TEMP_DAY         = "TEMP_DAY";
+    public static final String TEMP_MINIMUM     = "TEMP_MINIMUM";
+    public static final String TEMP_MAXIMUM     = "TEMP_MAXIMUM";
+    public static final String TEMP_NIGHT       = "TEMP_NIGHT";
+    public static final String TEMP_EVE         = "TEMP_EVE";
+    public static final String TEMP_MORN        = "TEMP_MORN";
+    public static final String PRESSURE         = "PRESSURE";
+    public static final String HUMIDITY         = "HUMIDITY";
+    public static final String WIND             = "WIND";
+    public static final String DEG              = "DEG";
+    public static final String CLOUDS           = "CLOUDS";
+    public static final String RAIN             = "RAIN";
 }
