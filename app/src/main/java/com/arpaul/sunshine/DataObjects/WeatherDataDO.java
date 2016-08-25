@@ -111,6 +111,7 @@ public class WeatherDataDO extends BaseDO {
         return 273-temperature;
     }
 
+    public static final String TAG_CITY = "city";
     public static final String TAG_LIST = "list";
     public static final String TAG_WEATHER = "weather";
 

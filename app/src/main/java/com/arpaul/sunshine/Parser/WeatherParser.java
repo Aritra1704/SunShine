@@ -1,8 +1,13 @@
 package com.arpaul.sunshine.parser;
 
+import com.arpaul.sunshine.common.AppConstants;
+import com.arpaul.sunshine.dataObjects.LocationDO;
+import com.arpaul.sunshine.dataObjects.ParserDO;
 import com.arpaul.sunshine.dataObjects.WeatherDataDO;
 import com.arpaul.sunshine.dataObjects.WeatherDescriptionDO;
+import com.arpaul.utilitieslib.CalendarUtils;
 import com.arpaul.utilitieslib.JSONUtils;
+import com.arpaul.utilitieslib.StringUtils;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -15,13 +20,34 @@ import java.util.Calendar;
  * Created by ARPaul on 05-04-2016.
  */
 public class WeatherParser {
-    public ArrayList<WeatherDataDO> parseWeatherData(String response){
+    public ParserDO parseWeatherData(String response){
+        ParserDO parseDO = new ParserDO();
         ArrayList<WeatherDataDO> arrWeather = new ArrayList<>();
         WeatherDataDO objWeatherDO = null;
+        LocationDO objLocationDO = new LocationDO();
         try {
-            JSONObject jsonObject = new JSONObject(response);
-            JSONArray result = jsonObject.getJSONArray(WeatherDataDO.TAG_LIST);
+            JSONObject jsonResponse = new JSONObject(response);
 
+            //Location parsing
+            JSONObject resultCity = jsonResponse.getJSONObject(WeatherDataDO.TAG_CITY);
+            if(JSONUtils.hasJSONtag(resultCity, LocationDO.TAG_ID)){
+                objLocationDO.saveData(resultCity.getString(LocationDO.TAG_ID), LocationDO.LOCATIONDATA.TYPE_LOCATION_ID);
+            }
+            if(JSONUtils.hasJSONtag(resultCity, LocationDO.TAG_NAME)){
+                objLocationDO.saveData(resultCity.getString(LocationDO.TAG_NAME), LocationDO.LOCATIONDATA.TYPE_CITY_NAME);
+            }
+            if(JSONUtils.hasJSONtag(resultCity, LocationDO.TAG_COORD)){
+                JSONObject jsonCoord = resultCity.getJSONObject(LocationDO.TAG_COORD);
+                if(JSONUtils.hasJSONtag(jsonCoord, LocationDO.TAG_LON)){
+                    objLocationDO.saveData(StringUtils.getDouble(jsonCoord.getString(LocationDO.TAG_LON)), LocationDO.LOCATIONDATA.TYPE_COORD_LON);
+                }
+                if(JSONUtils.hasJSONtag(jsonCoord, LocationDO.TAG_LAT)){
+                    objLocationDO.saveData(StringUtils.getDouble(jsonCoord.getString(LocationDO.TAG_LAT)), LocationDO.LOCATIONDATA.TYPE_COORD_LAT);
+                }
+            }
+
+            //Weather parsing
+            JSONArray result = jsonResponse.getJSONArray(WeatherDataDO.TAG_LIST);
             for (int i = 0; i < result.length(); i++) {
                 JSONObject body = result.getJSONObject(i);
 
@@ -29,7 +55,8 @@ public class WeatherParser {
 
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.DAY_OF_MONTH,cal.get(Calendar.DAY_OF_MONTH)+i);
-                objWeatherDO.saveData(cal.getTimeInMillis(), WeatherDataDO.WEATHERDATA.TYPE_DATE);
+                objWeatherDO.saveData(CalendarUtils.getDatefromTimeinMmiliesPattern(cal.getTimeInMillis(), CalendarUtils.DATE_FORMAT1), WeatherDataDO.WEATHERDATA.TYPE_DATE);
+                objWeatherDO.saveData(cal.getTimeInMillis(), WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS);
                 //objWeatherDO.savedt(body.getLong(WeatherDataDO.TAG_DT));
 
                 if(JSONUtils.hasJSONtag(body, WeatherDataDO.TAG_TEMP)){
@@ -78,11 +105,16 @@ public class WeatherParser {
 
                 arrWeather.add(objWeatherDO);
             }
+
+            if(objLocationDO != null)
+                parseDO.linkHash.put(ParserDO.ParseType.TYPE_LOCATION, objLocationDO);
+            if(arrWeather != null && arrWeather.size() > 0)
+                parseDO.linkHash.put(ParserDO.ParseType.TYPE_WEATHER, arrWeather);
         } catch (JSONException e) {
             e.printStackTrace();
         } catch(Exception ex) {
             ex.printStackTrace();
         }
-        return arrWeather;
+        return parseDO;
     }
 }

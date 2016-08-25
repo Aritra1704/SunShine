@@ -19,8 +19,9 @@ public class DataBaseHelper extends SQLiteOpenHelper {
 
     static final String CREATE_LOCATION_DB_TABLE =
             " CREATE TABLE IF NOT EXISTS " + SSCPConstants.LOCATION_TABLE_NAME +
-                    " (" + LocationDO.LOCATION_ID       + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    LocationDO.LOCATION_SETTING         + " VARCHAR  NOT NULL, " +
+                    " (" + LocationDO._ID               + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    LocationDO.LOCATION_ID              + " VARCHAR  NOT NULL, " +
+                    LocationDO.LOCATION_SETTING         + " VARCHAR, " +
                     LocationDO.CITY_NAME                + " VARCHAR  NOT NULL, " +
                     LocationDO.COORD_LAT                + " DOUBLE  NOT NULL, " +
                     LocationDO.COORD_LONG               + " DOUBLE  NOT NULL);";

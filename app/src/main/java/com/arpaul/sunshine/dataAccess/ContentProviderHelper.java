@@ -38,7 +38,7 @@ public class ContentProviderHelper extends ContentProvider {
     static {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(SSCPConstants.PROVIDER_NAME, SSCPConstants.LOCATION_TABLE_NAME, LOCATION_ID);
-        uriMatcher.addURI(SSCPConstants.PROVIDER_NAME, SSCPConstants.LOCATION_TABLE_NAME + TAG_ID_ALL, WEATHER_ID);
+        uriMatcher.addURI(SSCPConstants.PROVIDER_NAME, SSCPConstants.WEATHER_TABLE_NAME, WEATHER_ID);
         uriMatcher.addURI(SSCPConstants.PROVIDER_NAME, SSCPConstants.PATH_RELATIONSHIP_JOIN, RELATIONSHIP_JOIN);
     }
 
@@ -112,7 +112,7 @@ public class ContentProviderHelper extends ContentProvider {
             if(table.equalsIgnoreCase(SSCPConstants.WEATHER_TABLE_NAME)){
                 _id = db.update(table,
                         values,
-                        WeatherDataDO.LOCATION_ID + SSCPConstants.TABLE_QUES + "," + SSCPConstants.TABLE_AND + WeatherDataDO.DATE + SSCPConstants.TABLE_QUES,
+                        WeatherDataDO.LOCATION_ID + SSCPConstants.TABLE_QUES + SSCPConstants.TABLE_AND + WeatherDataDO.DATE + SSCPConstants.TABLE_QUES,
                         new String[]{(String) values.get(WeatherDataDO.LOCATION_ID),(String) values.get(WeatherDataDO.DATE)});
                 if(_id <= 0)
                     _id = db.insert(table, null, values);

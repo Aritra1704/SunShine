@@ -13,7 +13,7 @@ public class LocationDO extends BaseDO {
 
     public void saveData(Object data, LOCATIONDATA type){
         switch (type){
-            case TYPE_ID:
+            case TYPE_LOCATION_ID:
                 location_ID = (String) data;
                 break;
             case TYPE_LOCATION_SETTING:
@@ -33,7 +33,7 @@ public class LocationDO extends BaseDO {
 
     public Object getData(LOCATIONDATA type){
         switch (type){
-            case TYPE_ID:
+            case TYPE_LOCATION_ID:
                 return location_ID;
             case TYPE_LOCATION_SETTING:
                 return location_setting;
@@ -48,14 +48,21 @@ public class LocationDO extends BaseDO {
         }
     }
 
+    public static final String TAG_ID = "id";
+    public static final String TAG_NAME = "name";
+    public static final String TAG_COORD = "coord";
+    public static final String TAG_LON = "lon";
+    public static final String TAG_LAT = "lat";
+
     public enum LOCATIONDATA {
-        TYPE_ID,
+        TYPE_LOCATION_ID,
         TYPE_LOCATION_SETTING,
         TYPE_CITY_NAME,
         TYPE_COORD_LAT,
         TYPE_COORD_LON
     }
 
+    public static final String _ID          = "_ID";
     public static final String LOCATION_ID          = "LOCATION_ID";
     public static final String LOCATION_SETTING     = "LOCATION_SETTING";
     public static final String CITY_NAME            = "CITY_NAME";
