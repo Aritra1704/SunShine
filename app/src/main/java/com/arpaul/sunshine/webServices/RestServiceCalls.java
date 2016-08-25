@@ -157,6 +157,9 @@ public class RestServiceCalls {
             InputStream stream;
             switch (status) {
                 case WebServiceConstant.STATUS_SUCCESS :
+                case WebServiceConstant.STATUS_CREATED :
+                case WebServiceConstant.STATUS_ACCEPTED :
+                case WebServiceConstant.STATUS_NO_CONTENT :
                     stream = httpClient.getInputStream();
                     responseDo.setResponseCode(WebServiceResponse.ResponseType.SUCCESS);
                     break;
