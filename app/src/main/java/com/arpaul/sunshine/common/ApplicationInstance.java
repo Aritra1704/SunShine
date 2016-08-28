@@ -7,21 +7,8 @@ import android.app.Application;
  */
 public class ApplicationInstance extends Application {
 
-    public static final int LOADER_TOUR_HEADER          = 1;
-    public static final int LOADER_TOUR_DETAIL          = 2;
-    public static final int LOADER_DELETE_TOUR          = 3;
-    public static final int LOADER_CREATE_TOUR          = 4;
-    public static final int LOADER_TOUR_DATE = 5;
-    public static final int LOADER_UPDATE_TOUR          = 6;
-    public static final int LOADER_FARM_LIST            = 7;
-    public static final int LOADER_TOUR_LIST            = 8;
-    public static final int LOADER_INSERT_FARM          = 9;
-    public static final int LOADER_DELETE_TOUR_DETAIL   = 10;
-    public static final int LOADER_FETCH_ADDRESS        = 11;
-    public static final int LOADER_FETCH_LOCATION       = 12;
-    public static final int LOADER_SAVE_LOCATION        = 13;
-    public static final int LOADER_LOCATION_ID          = 14;
-    public static final int LOADER_LOCATION_ALL         = 15;
+    public static final int LOADER_FETCH_DAILY_FORECAST_API     = 1;
+    public static final int LOADER_FETCH_DAILY_FORECAST_DB      = 2;
 
     public static final int LOADER_FETCH_ALL_DATA   = 101;
     public static final int LOADER_DELETE_ALL_DATA  = 102;

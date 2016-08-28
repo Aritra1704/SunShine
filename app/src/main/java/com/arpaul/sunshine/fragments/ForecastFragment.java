@@ -20,7 +20,7 @@ import java.util.ArrayList;
 /**
  * Created by ARPaul on 04-04-2016.
  */
-public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks<ArrayList<WeatherDataDO>>{
+public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks {
     private RecyclerView rvWeather;
     private WeatherAdapter adapter;
 
@@ -47,12 +47,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public void onLoadFinished(Loader<ArrayList<WeatherDataDO>> loader, ArrayList<WeatherDataDO> data) {
-        adapter.refresh(data);
+    public void onLoadFinished(Loader loader, Object data) {
+        if(data instanceof ArrayList){
+            ArrayList<WeatherDataDO> arrWeather = (ArrayList<WeatherDataDO>) data;
+            adapter.refresh(arrWeather);
+        }
     }
 
     @Override
-    public void onLoaderReset(Loader<ArrayList<WeatherDataDO>> loader) {
+    public void onLoaderReset(Loader loader) {
         //adapter.refresh(new ArrayList<WeatherDataDO>());
     }
 
