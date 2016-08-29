@@ -39,6 +39,8 @@ public class DataBaseHelper extends SQLiteOpenHelper {
                     WeatherDataDO.TEMP_EVE          + " DOUBLE , " +
                     WeatherDataDO.TEMP_MORN         + " DOUBLE , " +
                     WeatherDataDO.PRESSURE          + " DOUBLE , " +
+                    WeatherDataDO.SEA_LEVEL         + " DOUBLE , " +
+                    WeatherDataDO.GRN_LEVEL         + " DOUBLE , " +
                     WeatherDataDO.HUMIDITY          + " DOUBLE," +
                     WeatherDataDO.WIND              + " DOUBLE," +
                     WeatherDataDO.DEG               + " DOUBLE," +

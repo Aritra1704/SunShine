@@ -16,6 +16,8 @@ public class WeatherDataDO extends BaseDO {
     private double temperatureEve = 0;
     private double temperatureMorn = 0;
     private double pressure = 0;
+    private double sea_level = 0;
+    private double grnd_level = 0;
     private double humidity = 0;
 
     private double speed = 0;
@@ -54,6 +56,10 @@ public class WeatherDataDO extends BaseDO {
             case TYPE_PRESSURE:
                 pressure = (double)data;
                 break;
+            case TYPE_SEA_LEVEL:
+                sea_level = (double)data;;
+            case TYPE_GRN_LEVEL:
+                grnd_level = (double)data;
             case TYPE_HUMIDITY:
                 humidity = (double)data;
                 break;
@@ -92,6 +98,10 @@ public class WeatherDataDO extends BaseDO {
                 return temperatureMorn;
             case TYPE_PRESSURE:
                 return pressure;
+            case TYPE_SEA_LEVEL:
+                return sea_level;
+            case TYPE_GRN_LEVEL:
+                return grnd_level;
             case TYPE_HUMIDITY:
                 return humidity;
             case TYPE_WIND:
@@ -117,18 +127,23 @@ public class WeatherDataDO extends BaseDO {
 
     public static final String TAG_DT = "dt";
     public static final String TAG_TEMP = "temp";
-    public static final String TAG_DAY = "day";
-    public static final String TAG_TEMP_MIN = "min";
-    public static final String TAG_TEMP_MAX = "max";
+    public static final String TAG_MAIN = "main";
+    public static final String TAG_TEMP_MIN = "temp_min";
+    public static final String TAG_TEMP_MAX = "temp_max";
     public static final String TAG_TEMP_NIGHT = "night";
     public static final String TAG_TEMP_EVE = "eve";
     public static final String TAG_TEMP_MORN = "morn";
     public static final String TAG_PRESSURE = "pressure";
+    public static final String TAG_SEA_LEVEL = "sea_level";
+    public static final String TAG_GRND_LEVEL = "grnd_level";
     public static final String TAG_HUMIDITY = "humidity";
+    public static final String TAG_WIND = "wind";
     public static final String TAG_SPEED = "speed";
     public static final String TAG_DEG = "deg";
     public static final String TAG_CLOUDS = "clouds";
+    public static final String TAG_CLOUDS_ALL = "all";
     public static final String TAG_RAIN = "rain";
+    public static final String TAG_RAIN_3H = "3h";
 
     public enum WEATHERDATA {
         TYPE_DATE,
@@ -141,6 +156,8 @@ public class WeatherDataDO extends BaseDO {
         TYPE_TEMP_EVE,
         TYPE_TEMP_MORN,
         TYPE_PRESSURE,
+        TYPE_SEA_LEVEL,
+        TYPE_GRN_LEVEL,
         TYPE_HUMIDITY,
         TYPE_WIND,
         TYPE_DEG,
@@ -159,6 +176,8 @@ public class WeatherDataDO extends BaseDO {
     public static final String TEMP_EVE         = "TEMP_EVE";
     public static final String TEMP_MORN        = "TEMP_MORN";
     public static final String PRESSURE         = "PRESSURE";
+    public static final String SEA_LEVEL        = "SEA_LEVEL";
+    public static final String GRN_LEVEL        = "GRN_LEVEL";
     public static final String HUMIDITY         = "HUMIDITY";
     public static final String WIND             = "WIND";
     public static final String DEG              = "DEG";
