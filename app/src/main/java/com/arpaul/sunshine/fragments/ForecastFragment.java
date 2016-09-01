@@ -3,6 +3,7 @@ package com.arpaul.sunshine.fragments;
 import android.Manifest;
 import android.content.Intent;
 import android.database.Cursor;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -71,7 +72,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         gpsUtills.setPackegeName(getActivity().getPackageName());
         gpsUtills.setListner(this);
 
-        if(new PermissionUtils().checkPermission(getActivity()) != 0){
+        if(Build.VERSION.SDK_INT >= 23 && new PermissionUtils().checkPermission(getActivity()) != 0){
             new PermissionUtils().verifyLocation(getActivity(),new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION});

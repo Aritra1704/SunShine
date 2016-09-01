@@ -10,10 +10,19 @@ android {
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
+        multiDexEnabled true
+    }
+    dexOptions {
+        incremental true
+        javaMaxHeapSize "4g"
     }
     buildTypes {
-        release {
+        debug {
             minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
@@ -25,6 +34,6 @@ dependencies {
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:recyclerview-v7:23.2.1'
     compile 'com.github.Aritra1704:UtilitiesJitPackLib:1.06'
-    compile 'com.github.Aritra1704:LocationFinder:1.0'
+    compile 'com.github.Aritra1704:LocationFinder:1.0.1'
     compile 'com.github.Aritra1704:CustomAlerts:1.01'
 }
