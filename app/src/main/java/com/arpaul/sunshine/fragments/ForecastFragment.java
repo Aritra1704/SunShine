@@ -83,10 +83,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
-    public Loader onCreateLoader(int id, Bundle args) {
+    public Loader onCreateLoader(int id, Bundle bundle) {
         switch (id){
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_API:
-                return new WeatherLoader(getActivity());
+                return new WeatherLoader(getActivity(), bundle);
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB:
                 return new CursorLoader(getActivity(), SSCPConstants.CONTENT_URI_WEATHER,
                         null,
@@ -181,8 +181,15 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             currentLatLng = (LatLng) response;
             LogUtils.debug("GPSTrack", "Currrent latLng :"+currentLatLng.latitude+" \n"+currentLatLng.longitude);
 
+            LocationDO objLocationDO = new LocationDO();
+            objLocationDO.saveData(currentLatLng.latitude, LocationDO.LOCATIONDATA.TYPE_COORD_LAT);
+            objLocationDO.saveData(currentLatLng.longitude, LocationDO.LOCATIONDATA.TYPE_COORD_LON);
+
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(WeatherLoader.BUNDLE_WEATHERLOADER, objLocationDO);
+
             if(NetworkUtility.isConnectionAvailable(getActivity()))
-                getActivity().getSupportLoaderManager().initLoader(ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_API, null, this).forceLoad();
+                getActivity().getSupportLoaderManager().initLoader(ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_API, bundle, this).forceLoad();
             else
                 getActivity().getSupportLoaderManager().initLoader(ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB, null, this).forceLoad();
 

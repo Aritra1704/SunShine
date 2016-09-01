@@ -5,8 +5,7 @@ import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
-import android.database.Cursor;
-import android.net.Uri;
+import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.content.AsyncTaskLoader;
 
@@ -26,10 +25,16 @@ import java.util.ArrayList;
 public class WeatherLoader extends AsyncTaskLoader {
 
     private Context context;
+    private LocationDO objLocationDO;
 
-    public WeatherLoader(Context context){
+    public final static String BUNDLE_WEATHERLOADER      = "BUNDLE_WEATHERLOADER";
+
+    public WeatherLoader(Context context, Bundle bundle){
         super(context);
         this.context = context;
+
+        if(bundle != null)
+            objLocationDO = (LocationDO) bundle.get(BUNDLE_WEATHERLOADER);
     }
     @Override
     public ArrayList<WeatherDataDO> loadInBackground() {
@@ -116,8 +121,8 @@ public class WeatherLoader extends AsyncTaskLoader {
 
     private String getURL(){
         return ParamBuilder.getDailyForecastParam(WebServiceConstant.URL_OPENWEATHERMAP+WebServiceConstant.URL_DAILY_FORECAST,
-                "35",
-                "139",
+                objLocationDO.getData(LocationDO.LOCATIONDATA.TYPE_COORD_LAT) + "",
+                objLocationDO.getData(LocationDO.LOCATIONDATA.TYPE_COORD_LON) + "",
                 "json",
                 "metric",
                 "7",
