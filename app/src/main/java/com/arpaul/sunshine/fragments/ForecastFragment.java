@@ -21,6 +21,7 @@ import com.arpaul.gpslibrary.fetchLocation.GPSCallback;
 import com.arpaul.gpslibrary.fetchLocation.GPSErrorCode;
 import com.arpaul.gpslibrary.fetchLocation.GPSUtills;
 import com.arpaul.sunshine.activity.BaseActivity;
+import com.arpaul.sunshine.activity.SunShineActivity;
 import com.arpaul.sunshine.adapter.WeatherAdapter;
 import com.arpaul.sunshine.common.ApplicationInstance;
 import com.arpaul.sunshine.dataAccess.SSCPConstants;
@@ -35,6 +36,8 @@ import com.arpaul.utilitieslib.StringUtils;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.TimeZone;
 
 /**
  * Created by ARPaul on 04-04-2016.
@@ -47,6 +50,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     private boolean ispermissionGranted = false;
     private boolean isGpsEnabled;
     private LatLng currentLatLng = null;
+
+//    https://blog.branch.io/how-to-set-up-android-m-6.0-marshmallow-app-links-with-deep-linking?bmp=fb&utm_campaign=Q316-Sept-Dev&utm_medium=cpc&utm_source=facebook&utm_term=androidM
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +77,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         gpsUtills.setPackegeName(getActivity().getPackageName());
         gpsUtills.setListner(this);
 
-        if(Build.VERSION.SDK_INT >= 23 && new PermissionUtils().checkPermission(getActivity()) != 0){
+        if(new PermissionUtils().checkPermission(getActivity(),new String[]{
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION}) != 0){
+
             new PermissionUtils().verifyLocation(getActivity(),new String[]{
                     Manifest.permission.ACCESS_FINE_LOCATION,
                     Manifest.permission.ACCESS_COARSE_LOCATION});
@@ -149,6 +157,23 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     }
 
     @Override
+    public void onResume() {
+        super.onResume();
+
+        Calendar cal = Calendar.getInstance();
+        TimeZone tz = cal.getTimeZone();
+        String calTimeZone = tz.getDisplayName();
+
+//        String timeZone = TimeZone.getDefault().getDisplayName();
+        String timeZone = getActivity().getResources().getConfiguration().locale.getCountry();
+
+        String timezoneID = TimeZone.getDefault().getID();
+
+        String message = "calTimeZone: "+calTimeZone+"\n"+"timeZone: "+timeZone+"\n"+"timezoneID: "+timezoneID;
+//        ((BaseActivity)getActivity()).showCustomDialog(getString(R.string.alert),message,getString(R.string.ok),null,getString(R.string.unable_to_fetch_your_current_location), CustomPopupType.DIALOG_ALERT,false);
+    }
+
+    @Override
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
 
@@ -179,7 +204,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         }
         else if(code == GPSErrorCode.EC_LOCATION_FOUND) {
             currentLatLng = (LatLng) response;
-            LogUtils.debug("GPSTrack", "Currrent latLng :"+currentLatLng.latitude+" \n"+currentLatLng.longitude);
+            LogUtils.debugLog("GPSTrack", "Currrent latLng :"+currentLatLng.latitude+" \n"+currentLatLng.longitude);
 
             LocationDO objLocationDO = new LocationDO();
             objLocationDO.saveData(currentLatLng.latitude, LocationDO.LOCATIONDATA.TYPE_COORD_LAT);

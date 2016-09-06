@@ -55,7 +55,7 @@ public class WeatherParser {
 
                 Calendar cal = Calendar.getInstance();
                 cal.set(Calendar.DAY_OF_MONTH,cal.get(Calendar.DAY_OF_MONTH)+i);
-                objWeatherDO.saveData(CalendarUtils.getDatefromTimeinMmiliesPattern(cal.getTimeInMillis(), CalendarUtils.DATE_FORMAT1), WeatherDataDO.WEATHERDATA.TYPE_DATE);
+                objWeatherDO.saveData(CalendarUtils.getDatefromTimeinMilliesPattern(cal.getTimeInMillis(), CalendarUtils.DATE_FORMAT1), WeatherDataDO.WEATHERDATA.TYPE_DATE);
                 objWeatherDO.saveData(cal.getTimeInMillis(), WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS);
                 //objWeatherDO.savedt(body.getLong(WeatherDataDO.TAG_DT));
 

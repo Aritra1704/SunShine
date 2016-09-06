@@ -7,6 +7,8 @@ import android.support.v4.app.FragmentTransaction;
 import android.view.View;
 import android.widget.LinearLayout;
 
+import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopup;
+import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.sunshine.common.ApplicationInstance;
 import com.arpaul.sunshine.fragments.ForecastFragment;
 import com.arpaul.sunshine.R;
@@ -28,6 +30,11 @@ public class SunShineActivity extends BaseActivity {
 
         //ForecastFragment forecastFragment =  ((ForecastFragment)getSupportFragmentManager().findFragmentById(R.id.fragment_forecast));
         //getSupportFragmentManager().beginTransaction().attach(forecastFragment).commit();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     @Override

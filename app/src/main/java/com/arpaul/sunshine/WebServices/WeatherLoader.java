@@ -84,7 +84,7 @@ public class WeatherLoader extends AsyncTaskLoader {
 
                     contentValues.put(WeatherDataDO.LOCATION_ID, location_id);
                     contentValues.put(WeatherDataDO.DATE_MILLIS, (long) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS));
-                    String date = CalendarUtils.getDatefromTimeinMmiliesPattern((long) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS), CalendarUtils.DATE_FORMAT1)+" ";
+                    String date = CalendarUtils.getDatefromTimeinMilliesPattern((long) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS), CalendarUtils.DATE_FORMAT1)+" ";
                     contentValues.put(WeatherDataDO.DATE, date);
                     contentValues.put(WeatherDataDO.TEMP_DAY, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP));
                     contentValues.put(WeatherDataDO.TEMP_MINIMUM, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MIN));

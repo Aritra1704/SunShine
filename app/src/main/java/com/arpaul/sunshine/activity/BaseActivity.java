@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.Window;
 import android.widget.LinearLayout;
 
+import com.arpaul.customalertlibrary.dialogs.CustomDialog;
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopup;
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.customalertlibrary.popups.statingDialog.PopupListener;
@@ -21,7 +22,8 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
 
     public LayoutInflater baseInflater;
     public LinearLayout llBody;
-    private CustomPopup cPopup;
+//    private CustomPopup cPopup;
+    private CustomDialog cDialog;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -66,8 +68,8 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                if (cPopup != null && cPopup.isShowing())
-                    cPopup.dismiss();
+                if (cDialog != null && cDialog.isShowing())
+                    cDialog.dismiss();
             }
         });
     }
@@ -123,7 +125,7 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
 
         private void showNotNormal(){
             try{
-                if (cPopup != null && cPopup.isShowing())
+                /*if (cPopup != null && cPopup.isShowing())
                     cPopup.dismiss();
 
                 cPopup = new CustomPopup(BaseActivity.this, BaseActivity.this,strTitle,strMessage,
@@ -136,7 +138,16 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
                     public void run() {
                         cPopup.show();
                     }
-                });
+                });*/
+
+
+                if (cDialog != null && cDialog.isShowing())
+                    cDialog.dismiss();
+
+                cDialog = new CustomDialog(BaseActivity.this, BaseActivity.this,strTitle,strMessage,
+                        firstBtnName, secondBtnName, from, dislogType);
+
+                cDialog.show();
             }catch(Exception e){
                 e.printStackTrace();
             }
@@ -144,7 +155,7 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
 
         private void showNormal(){
             try{
-                if (cPopup != null && cPopup.isShowing())
+                /*if (cPopup != null && cPopup.isShowing())
                     cPopup.dismiss();
 
                 cPopup = new CustomPopup(BaseActivity.this, BaseActivity.this,strTitle,strMessage,
@@ -157,7 +168,17 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
                     public void run() {
                         cPopup.show();
                     }
-                });
+                });*/
+
+
+                if (cDialog != null && cDialog.isShowing())
+                    cDialog.dismiss();
+
+                cDialog = new CustomDialog(BaseActivity.this, BaseActivity.this,strTitle,strMessage,
+                        firstBtnName, secondBtnName, from, CustomPopupType.DIALOG_NORMAL);
+
+                cDialog.show();
+
             }catch(Exception e){
                 e.printStackTrace();
             }
