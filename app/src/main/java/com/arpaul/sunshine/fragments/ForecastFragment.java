@@ -1,9 +1,7 @@
 package com.arpaul.sunshine.fragments;
 
 import android.Manifest;
-import android.content.Intent;
 import android.database.Cursor;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -11,24 +9,28 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.LoaderManager;
 import android.support.v4.content.CursorLoader;
 import android.support.v4.content.Loader;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.gpslibrary.fetchLocation.GPSCallback;
 import com.arpaul.gpslibrary.fetchLocation.GPSErrorCode;
 import com.arpaul.gpslibrary.fetchLocation.GPSUtills;
 import com.arpaul.sunshine.activity.BaseActivity;
-import com.arpaul.sunshine.activity.SunShineActivity;
 import com.arpaul.sunshine.adapter.WeatherAdapter;
+import com.arpaul.sunshine.common.AppConstants;
 import com.arpaul.sunshine.common.ApplicationInstance;
 import com.arpaul.sunshine.dataAccess.SSCPConstants;
 import com.arpaul.sunshine.dataObjects.LocationDO;
 import com.arpaul.sunshine.dataObjects.WeatherDataDO;
 import com.arpaul.sunshine.R;
+import com.arpaul.sunshine.dataObjects.WeatherDescriptionDO;
 import com.arpaul.sunshine.webServices.WeatherLoader;
+import com.arpaul.utilitieslib.CalendarUtils;
 import com.arpaul.utilitieslib.LogUtils;
 import com.arpaul.utilitieslib.NetworkUtility;
 import com.arpaul.utilitieslib.PermissionUtils;
@@ -43,8 +45,10 @@ import java.util.TimeZone;
  * Created by ARPaul on 04-04-2016.
  */
 public class ForecastFragment extends Fragment implements LoaderManager.LoaderCallbacks, GPSCallback {
-    private RecyclerView rvWeather;
-    private WeatherAdapter adapter;
+
+    private TextView tvLocation, tvWeatherCondition, tvCurrentTemp, tvDay, tvMaxTemp, tvMinTemp;
+    private RecyclerView rvWeather, rvTodayTemp;
+    private WeatherAdapter adapterWeather;
 
     private GPSUtills gpsUtills;
     private boolean ispermissionGranted = false;
@@ -112,7 +116,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_API:
                 if(data instanceof ArrayList){
                     ArrayList<WeatherDataDO> arrWeather = (ArrayList<WeatherDataDO>) data;
-                    adapter.refresh(arrWeather);
+                    adapterWeather.refresh(arrWeather);
                 }
                 break;
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB:
@@ -142,7 +146,9 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
                             arrWeather.add(objWeatherDO);
                         } while (cursor.moveToNext());
-                        adapter.refresh(arrWeather);
+                        adapterWeather.refresh(arrWeather);
+
+                        setData(arrWeather);
                     }
                 }
                 break;
@@ -153,7 +159,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onLoaderReset(Loader loader) {
-        //adapter.refresh(new ArrayList<WeatherDataDO>());
+        //adapterWeather.refresh(new ArrayList<WeatherDataDO>());
     }
 
     @Override
@@ -260,10 +266,43 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         gpsUtills.isGpsProviderEnabled();
     }
 
-    private void initializeControls(View rootView){
-        rvWeather = (RecyclerView) rootView.findViewById(R.id.rvWeather);
+    private void setData(ArrayList<WeatherDataDO> arrWeather){
+        if(arrWeather != null && arrWeather.size() > 0){
+            for (WeatherDataDO objWeatherDO : arrWeather){
+                String date = (String) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE);
+                if(date.equalsIgnoreCase(CalendarUtils.getDateinPattern(CalendarUtils.DATE_FORMAT1))) {
+                    String weather = "";
+                    if(objWeatherDO.arrWeatheDescp != null && objWeatherDO.arrWeatheDescp.size() > 0)
+                        weather = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION);
 
-        adapter = new WeatherAdapter(getActivity(),new ArrayList<WeatherDataDO>());
-        rvWeather.setAdapter(adapter);
+                    tvWeatherCondition.setText(weather);
+                    tvCurrentTemp.setText((double) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP)+"");
+
+                    String dateToday = CalendarUtils.getDatefromTimeinMilliesPattern((long) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS), AppConstants.DATE_PATTERN_WEEKNAME_FORMAT)+" ";
+                    tvDay.setText(dateToday);
+                    tvMaxTemp.setText((double) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MAX)+"");
+                    tvMinTemp.setText((double) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MIN)+"");
+                }
+            }
+        }
+    }
+
+    private void initializeControls(View rootView){
+
+        tvLocation = (TextView) rootView.findViewById(R.id.tvLocation);
+        tvWeatherCondition = (TextView) rootView.findViewById(R.id.tvWeatherCondition);
+
+        tvCurrentTemp = (TextView) rootView.findViewById(R.id.tvCurrentTemp);
+        tvDay = (TextView) rootView.findViewById(R.id.tvDay);
+        tvMaxTemp = (TextView) rootView.findViewById(R.id.tvMaxTemp);
+        tvMinTemp = (TextView) rootView.findViewById(R.id.tvMinTemp);
+
+        rvTodayTemp = (RecyclerView) rootView.findViewById(R.id.rvTodayTemp);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity(), LinearLayoutManager.HORIZONTAL, false);
+        rvTodayTemp.setLayoutManager(layoutManager);
+
+        rvWeather = (RecyclerView) rootView.findViewById(R.id.rvWeather);
+        adapterWeather = new WeatherAdapter(getActivity(),new ArrayList<WeatherDataDO>());
+        rvWeather.setAdapter(adapterWeather);
     }
 }
