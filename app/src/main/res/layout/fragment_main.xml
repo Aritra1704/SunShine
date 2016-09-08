@@ -92,7 +92,7 @@
             android:id="@+id/rvTodayTemp"
             class="android.support.v7.widget.RecyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="@dimen/margin_100"
             app:layoutManager="LinearLayoutManager" />
     </LinearLayout>
 
