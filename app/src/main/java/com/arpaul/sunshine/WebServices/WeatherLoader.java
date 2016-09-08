@@ -5,6 +5,7 @@ import android.content.ContentProviderResult;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.OperationApplicationException;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.RemoteException;
 import android.support.v4.content.AsyncTaskLoader;
@@ -13,9 +14,11 @@ import com.arpaul.sunshine.dataAccess.SSCPConstants;
 import com.arpaul.sunshine.dataObjects.LocationDO;
 import com.arpaul.sunshine.dataObjects.ParserDO;
 import com.arpaul.sunshine.dataObjects.WeatherDataDO;
+import com.arpaul.sunshine.dataObjects.WeatherDescriptionDO;
 import com.arpaul.sunshine.parser.WeatherParser;
 import com.arpaul.sunshine.R;
 import com.arpaul.utilitieslib.CalendarUtils;
+import com.arpaul.utilitieslib.StringUtils;
 
 import java.util.ArrayList;
 
@@ -77,31 +80,60 @@ public class WeatherLoader extends AsyncTaskLoader {
 
                 String location_id = objLocationDO.location_ID;
 
-                for(WeatherDataDO productId: arrWeather){
+                Cursor cursor = context.getContentResolver().query(SSCPConstants.CONTENT_URI_WEATHER,
+                        new String[]{"MAX(" + WeatherDataDO.WEATHER_ID + ") AS " + WeatherDataDO.WEATHER_ID},
+                        null,
+                        null,
+                        null);
+
+                int weatherIdMax = 0;
+                if(cursor != null && cursor.moveToFirst()){
+                    weatherIdMax = StringUtils.getInt(cursor.getString(cursor.getColumnIndex(WeatherDataDO.WEATHER_ID)));
+                }
+                cursor.close();
+
+                for(WeatherDataDO objWeatherDataDO: arrWeather){
 
                     builder = ContentProviderOperation.newInsert(SSCPConstants.CONTENT_URI_WEATHER);
                     contentValues = new ContentValues();
 
+                    weatherIdMax++;
                     contentValues.put(WeatherDataDO.LOCATION_ID, location_id);
-                    contentValues.put(WeatherDataDO.DATE_MILLIS, (long) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS));
-                    String date = CalendarUtils.getDatefromTimeinMilliesPattern((long) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS), CalendarUtils.DATE_FORMAT1)+" ";
+                    contentValues.put(WeatherDataDO.WEATHER_ID, weatherIdMax);
+                    contentValues.put(WeatherDataDO.DATE_MILLIS, (long) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS));
+                    String date = CalendarUtils.getDatefromTimeinMilliesPattern((long) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS), CalendarUtils.DATE_FORMAT1)+" ";
                     contentValues.put(WeatherDataDO.DATE, date);
-                    contentValues.put(WeatherDataDO.TEMP_DAY, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP));
-                    contentValues.put(WeatherDataDO.TEMP_MINIMUM, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MIN));
-                    contentValues.put(WeatherDataDO.TEMP_MAXIMUM, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MAX));
-                    contentValues.put(WeatherDataDO.TEMP_MORN, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MORN));
-                    contentValues.put(WeatherDataDO.TEMP_EVE, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_EVE));
-                    contentValues.put(WeatherDataDO.TEMP_NIGHT, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_NIGHT));
+                    contentValues.put(WeatherDataDO.TEMP_DAY, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP));
+                    contentValues.put(WeatherDataDO.TEMP_MINIMUM, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MIN));
+                    contentValues.put(WeatherDataDO.TEMP_MAXIMUM, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MAX));
+                    contentValues.put(WeatherDataDO.TEMP_MORN, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MORN));
+                    contentValues.put(WeatherDataDO.TEMP_EVE, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_EVE));
+                    contentValues.put(WeatherDataDO.TEMP_NIGHT, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_NIGHT));
 
-                    contentValues.put(WeatherDataDO.PRESSURE, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_PRESSURE));
-                    contentValues.put(WeatherDataDO.HUMIDITY, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_HUMIDITY));
-                    contentValues.put(WeatherDataDO.WIND, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_WIND));
-                    contentValues.put(WeatherDataDO.DEG, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_DEG));
-                    contentValues.put(WeatherDataDO.CLOUDS, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_CLOUDS));
-                    contentValues.put(WeatherDataDO.RAIN, (double) productId.getData(WeatherDataDO.WEATHERDATA.TYPE_RAIN));
+                    contentValues.put(WeatherDataDO.PRESSURE, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_PRESSURE));
+                    contentValues.put(WeatherDataDO.HUMIDITY, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_HUMIDITY));
+                    contentValues.put(WeatherDataDO.WIND, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_WIND));
+                    contentValues.put(WeatherDataDO.DEG, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DEG));
+                    contentValues.put(WeatherDataDO.CLOUDS, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_CLOUDS));
+                    contentValues.put(WeatherDataDO.RAIN, (double) objWeatherDataDO.getData(WeatherDataDO.WEATHERDATA.TYPE_RAIN));
 
                     builder.withValues(contentValues);
                     contentProviderOperations.add(builder.build());
+
+                    if(objWeatherDataDO.arrWeatheDescp != null && objWeatherDataDO.arrWeatheDescp.size() > 0){
+                        for (WeatherDescriptionDO objWeatherDescrpDO : objWeatherDataDO.arrWeatheDescp){
+                            builder = ContentProviderOperation.newInsert(SSCPConstants.CONTENT_URI_WEATHER_DESCRIP);
+                            contentValues = new ContentValues();
+
+                            contentValues.put(WeatherDescriptionDO.WEATHER_ID, weatherIdMax);
+                            contentValues.put(WeatherDescriptionDO.MAIN, (String) objWeatherDescrpDO.getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_MAIN));
+                            contentValues.put(WeatherDescriptionDO.DESCRIPTION, (String) objWeatherDescrpDO.getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION));
+                            contentValues.put(WeatherDescriptionDO.ICON, (String) objWeatherDescrpDO.getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_ICON));
+
+                            builder.withValues(contentValues);
+                            contentProviderOperations.add(builder.build());
+                        }
+                    }
                 }
 
                 try {

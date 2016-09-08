@@ -62,7 +62,7 @@ public class LocationDO extends BaseDO {
         TYPE_COORD_LON
     }
 
-    public static final String _ID          = "_ID";
+    public static final String _ID                  = "_ID";
     public static final String LOCATION_ID          = "LOCATION_ID";
     public static final String LOCATION_SETTING     = "LOCATION_SETTING";
     public static final String CITY_NAME            = "CITY_NAME";

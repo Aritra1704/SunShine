@@ -14,6 +14,7 @@ public class SSCPConstants {
 
     public static final String WEATHER_TABLE_NAME               = "tblWeather";
     public static final String LOCATION_TABLE_NAME              = "tblLocation";
+    public static final String WEATHER_DESCRIP_TABLE_NAME       = "tblWeatherDescrip";
 
     public static final String AS_WEATHER_TABLE                  = " tW";
     public static final String AS_LOCATION_TABLE                 = " tL";
@@ -44,6 +45,7 @@ public class SSCPConstants {
 
     public static final Uri CONTENT_URI_LOCATION = Uri.parse(CONTENT + CONTENT_AUTHORITY + DELIMITER + LOCATION_TABLE_NAME);
     public static final Uri CONTENT_URI_WEATHER = Uri.parse(CONTENT + CONTENT_AUTHORITY + DELIMITER + WEATHER_TABLE_NAME);
+    public static final Uri CONTENT_URI_WEATHER_DESCRIP = Uri.parse(CONTENT + CONTENT_AUTHORITY + DELIMITER + WEATHER_DESCRIP_TABLE_NAME);
 
     public static final Uri CONTENT_URI_RELATIONSHIP_JOIN = Uri.parse(CONTENT + CONTENT_AUTHORITY + DELIMITER + PATH_RELATIONSHIP_JOIN);
 

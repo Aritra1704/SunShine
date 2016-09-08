@@ -165,6 +165,7 @@ public class WeatherDataDO extends BaseDO {
         TYPE_RAIN
     }
 
+    public static final String _ID              = "_ID";
     public static final String WEATHER_ID       = "WEATHER_ID";
     public static final String LOCATION_ID      = "LOCATION_ID";
     public static final String DATE             = "DATE";

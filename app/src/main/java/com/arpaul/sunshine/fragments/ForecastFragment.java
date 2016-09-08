@@ -102,7 +102,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB:
                 return new CursorLoader(getActivity(), SSCPConstants.CONTENT_URI_WEATHER,
                         null,
-                        null,
+                        WeatherDataDO.DATE + " >= Date('now')",
                         null,
                         null);
             default:
@@ -115,8 +115,13 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         switch (loader.getId()){
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_API:
                 if(data instanceof ArrayList){
-                    ArrayList<WeatherDataDO> arrWeather = (ArrayList<WeatherDataDO>) data;
-                    adapterWeather.refresh(arrWeather);
+                    /*ArrayList<WeatherDataDO> arrWeather = (ArrayList<WeatherDataDO>) data;
+                    adapterWeather.refresh(arrWeather);*/
+
+                    if(getActivity().getSupportLoaderManager().getLoader(ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB) != null)
+                        getActivity().getSupportLoaderManager().restartLoader(ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB, null, this).forceLoad();
+                    else
+                        getActivity().getSupportLoaderManager().initLoader(ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB, null, this).forceLoad();
                 }
                 break;
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB:
@@ -124,9 +129,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     Cursor cursor = (Cursor) data;
                     WeatherDataDO objWeatherDO = null;
                     if (cursor != null && cursor.moveToFirst()) {
-                        objWeatherDO = new WeatherDataDO();
                         ArrayList<WeatherDataDO> arrWeather = new ArrayList<>();
                         do {
+                            objWeatherDO = new WeatherDataDO();
+
                             objWeatherDO.saveData(cursor.getString(cursor.getColumnIndex(WeatherDataDO.DATE)), WeatherDataDO.WEATHERDATA.TYPE_DATE);
                             objWeatherDO.saveData(StringUtils.getLong(cursor.getString(cursor.getColumnIndex(WeatherDataDO.DATE_MILLIS))), WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS);
                             objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.TEMP_DAY))), WeatherDataDO.WEATHERDATA.TYPE_TEMP);
@@ -258,8 +264,10 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
     @Override
     public void onStop() {
         super.onStop();
-        if(gpsUtills != null)
+        if(gpsUtills != null){
+            gpsUtills.stopLocationUpdates();
             gpsUtills.disConnectGoogleApiClient();
+        }
     }
 
     private void createGPSUtils(){
@@ -270,7 +278,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         if(arrWeather != null && arrWeather.size() > 0){
             for (WeatherDataDO objWeatherDO : arrWeather){
                 String date = (String) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE);
-                if(date.equalsIgnoreCase(CalendarUtils.getDateinPattern(CalendarUtils.DATE_FORMAT1))) {
+                if(date.trim().equalsIgnoreCase(CalendarUtils.getDateinPattern(CalendarUtils.DATE_FORMAT1))) {
                     String weather = "";
                     if(objWeatherDO.arrWeatheDescp != null && objWeatherDO.arrWeatheDescp.size() > 0)
                         weather = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION);

@@ -28,6 +28,7 @@ public class ContentProviderHelper extends ContentProvider {
 
     public static final int LOCATION_ID                             = 1;
     public static final int WEATHER_ID                              = 2;
+    public static final int WEATHER_DESCRIP_ID                      = 3;
 
     public static final int RELATIONSHIP_JOIN                       = 100;
 
@@ -39,6 +40,7 @@ public class ContentProviderHelper extends ContentProvider {
         uriMatcher = new UriMatcher(UriMatcher.NO_MATCH);
         uriMatcher.addURI(SSCPConstants.PROVIDER_NAME, SSCPConstants.LOCATION_TABLE_NAME, LOCATION_ID);
         uriMatcher.addURI(SSCPConstants.PROVIDER_NAME, SSCPConstants.WEATHER_TABLE_NAME, WEATHER_ID);
+        uriMatcher.addURI(SSCPConstants.PROVIDER_NAME, SSCPConstants.WEATHER_DESCRIP_TABLE_NAME, WEATHER_DESCRIP_ID);
         uriMatcher.addURI(SSCPConstants.PROVIDER_NAME, SSCPConstants.PATH_RELATIONSHIP_JOIN, RELATIONSHIP_JOIN);
     }
 
@@ -151,6 +153,9 @@ public class ContentProviderHelper extends ContentProvider {
                 case WEATHER_ID:
                     table = SSCPConstants.WEATHER_TABLE_NAME;
                     break;
+                case WEATHER_DESCRIP_ID:
+                    table = SSCPConstants.WEATHER_DESCRIP_TABLE_NAME;
+                    break;
                 case RELATIONSHIP_JOIN:
                     table = selection;
                     selection = null;
@@ -222,6 +227,9 @@ public class ContentProviderHelper extends ContentProvider {
                 break;
             case WEATHER_ID:
                 table = SSCPConstants.WEATHER_TABLE_NAME;
+                break;
+            case WEATHER_DESCRIP_ID:
+                table = SSCPConstants.WEATHER_DESCRIP_TABLE_NAME;
                 break;
             default: {
                 throw new UnsupportedOperationException("Unknown uri: " + uri);
