@@ -13,7 +13,7 @@ public class WebServiceConstant {
     public final static int STATUS_INVALID_API_KEY     = 401;
 
     public final static String URL_OPENWEATHERMAP      = "http://api.openweathermap.org/data/2.5/";
-    public final static String URL_DAILY_FORECAST      = "forecast?";
+    public final static String URL_DAILY_FORECAST      = "forecast/daily?";
 
     public final static String GET      = "GET";
     public final static String POST     = "POST";

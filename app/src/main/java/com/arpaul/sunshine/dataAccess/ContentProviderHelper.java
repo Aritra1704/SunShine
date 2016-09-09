@@ -119,6 +119,14 @@ public class ContentProviderHelper extends ContentProvider {
                 if(_id <= 0)
                     _id = db.insert(table, null, values);
 
+            } else if(table.equalsIgnoreCase(SSCPConstants.LOCATION_TABLE_NAME)){
+                _id = db.update(table,
+                        values,
+                        LocationDO.LOCATION_ID + SSCPConstants.TABLE_QUES,
+                        new String[]{(String) values.get(LocationDO.LOCATION_ID)});
+                if(_id <= 0)
+                    _id = db.insert(table, null, values);
+
             } else {
                 _id = db.insert(table, null, values);
             }

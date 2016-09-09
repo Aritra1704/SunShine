@@ -128,9 +128,10 @@ public class WeatherDataDO extends BaseDO {
     public static final String TAG_DT = "dt";
     public static final String TAG_TEMP = "temp";
     public static final String TAG_MAIN = "main";
-    public static final String TAG_TEMP_MIN = "temp_min";
-    public static final String TAG_TEMP_MAX = "temp_max";
+    public static final String TAG_TEMP_MIN = "min";
+    public static final String TAG_TEMP_MAX = "max";
     public static final String TAG_TEMP_NIGHT = "night";
+    public static final String TAG_TEMP_DAY = "day";
     public static final String TAG_TEMP_EVE = "eve";
     public static final String TAG_TEMP_MORN = "morn";
     public static final String TAG_PRESSURE = "pressure";

@@ -1,7 +1,6 @@
 package com.arpaul.sunshine.activity;
 
 import android.os.Bundle;
-import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -9,11 +8,13 @@ import android.view.Window;
 import android.widget.LinearLayout;
 
 import com.arpaul.customalertlibrary.dialogs.CustomDialog;
-import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopup;
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.customalertlibrary.popups.statingDialog.PopupListener;
 import com.arpaul.sunshine.R;
 import com.arpaul.utilitieslib.UnCaughtException;
+
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
 
 /**
  * Created by Aritra on 15-08-2016.
@@ -24,6 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
     public LinearLayout llBody;
 //    private CustomPopup cPopup;
     private CustomDialog cDialog;
+    public DecimalFormat degreeFormat;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -44,7 +46,10 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
     public abstract void initialize(Bundle savedInstanceState);
 
     private void bindBaseControls(){
-
+        degreeFormat = new DecimalFormat("##");
+        degreeFormat.setRoundingMode(RoundingMode.CEILING);
+        degreeFormat.setMinimumFractionDigits(0);
+        degreeFormat.setMaximumFractionDigits(0);
     }
 
     /**
