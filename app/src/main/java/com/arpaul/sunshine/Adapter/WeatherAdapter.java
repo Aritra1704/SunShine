@@ -15,6 +15,7 @@ import com.arpaul.sunshine.dataObjects.WeatherDataDO;
 import com.arpaul.sunshine.R;
 import com.arpaul.sunshine.dataObjects.WeatherDescriptionDO;
 import com.arpaul.utilitieslib.CalendarUtils;
+import com.arpaul.utilitieslib.StringUtils;
 
 import java.util.ArrayList;
 
@@ -51,6 +52,9 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
             weather = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION);
         String temp = (double) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP)+"/"+(double) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP_MAX);
         holder.tvWeatherCondition.setText(date+weather+temp);
+
+        String icon = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_ICON);
+        holder.ivWeather.setImageResource(AppConstants.getArtResourceForWeatherCondition(StringUtils.getInt(icon)));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

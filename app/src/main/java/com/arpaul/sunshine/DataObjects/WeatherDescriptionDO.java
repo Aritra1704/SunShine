@@ -56,6 +56,7 @@ public class WeatherDescriptionDO extends BaseDO {
 
     public static final String WEATHER_DESCRIP_ID       = "WEATHER_DESCRIP_ID";
     public static final String WEATHER_ID               = "WEATHER_ID";
+    public static final String WEATHER_ICON_ID          = "WEATHER_ICON_ID";
     public static final String MAIN                     = "MAIN";
     public static final String DESCRIPTION              = "DESCRIPTION";
     public static final String ICON                     = "ICON";

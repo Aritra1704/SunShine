@@ -2,6 +2,7 @@ package com.arpaul.sunshine.fragments;
 
 import android.Manifest;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteQueryBuilder;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.annotation.Nullable;
@@ -14,6 +15,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
@@ -41,6 +43,7 @@ import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.LinkedHashMap;
 import java.util.TimeZone;
 
 /**
@@ -50,6 +53,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     private TextView tvLocation, tvWeatherCondition, tvCurrentTemp, tvDay, tvMaxTemp, tvMinTemp;
     private RecyclerView rvWeather, rvTodayTemp;
+    private ImageView ivDayWeather;
     private WeatherAdapter adapterWeather;
     private WeatherTodayAdapter adapterTodayWeather;
 
@@ -103,11 +107,59 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_API:
                 return new WeatherLoader(getActivity(), bundle);
             case ApplicationInstance.LOADER_FETCH_DAILY_FORECAST_DB:
-                return new CursorLoader(getActivity(), SSCPConstants.CONTENT_URI_WEATHER,
+                SQLiteQueryBuilder queryBuilder = new SQLiteQueryBuilder();
+
+                queryBuilder.setTables(
+                        SSCPConstants.LOCATION_TABLE_NAME + SSCPConstants.AS_LOCATION_TABLE +
+                                SSCPConstants.TABLE_INNER_JOIN +
+                                SSCPConstants.WEATHER_TABLE_NAME + SSCPConstants.AS_WEATHER_TABLE +
+                                SSCPConstants.TABLE_ON +
+                                SSCPConstants.AS_LOCATION_TABLE + SSCPConstants.TABLE_DOT + LocationDO.LOCATION_ID + SSCPConstants.TABLE_EQUAL +
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.LOCATION_ID +
+                                SSCPConstants.TABLE_LEFT_OUTER_JOIN +
+                                SSCPConstants.WEATHER_DESCRIP_TABLE_NAME + SSCPConstants.AS_WEATHER_DESC_TABLE +
+                                SSCPConstants.TABLE_ON +
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.WEATHER_ID + SSCPConstants.TABLE_EQUAL +
+                                SSCPConstants.AS_WEATHER_DESC_TABLE + SSCPConstants.TABLE_DOT + WeatherDescriptionDO.WEATHER_ID +
+                                SSCPConstants.TABLE_WHERE +
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.DATE + " >= Date('now')");
+
+                LogUtils.infoLog("QUERY_FARM_LIST", queryBuilder.getTables());
+                
+                return new CursorLoader(getActivity(),
+                        SSCPConstants.CONTENT_URI_RELATIONSHIP_JOIN,
+                        new String[]{
+                                SSCPConstants.AS_LOCATION_TABLE + SSCPConstants.TABLE_DOT + LocationDO.CITY_NAME,
+
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.WEATHER_ID,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.DATE,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.DATE_MILLIS,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.TEMP_DAY,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.TEMP_MINIMUM,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.TEMP_MAXIMUM,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.TEMP_NIGHT,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.TEMP_EVE,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.TEMP_MORN,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.PRESSURE,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.SEA_LEVEL,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.GRN_LEVEL,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.HUMIDITY,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.WIND,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.DEG,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.CLOUDS,
+                                SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT + WeatherDataDO.RAIN,
+
+                                SSCPConstants.AS_WEATHER_DESC_TABLE + SSCPConstants.TABLE_DOT + WeatherDescriptionDO.WEATHER_ICON_ID,
+                                SSCPConstants.AS_WEATHER_DESC_TABLE + SSCPConstants.TABLE_DOT + WeatherDescriptionDO.MAIN},
+                        queryBuilder.getTables(),
+                        null,
+                        null);
+                
+                /*return new CursorLoader(getActivity(), SSCPConstants.CONTENT_URI_WEATHER,
                         null,
                         WeatherDataDO.DATE + " >= Date('now')",
                         null,
-                        null);
+                        null);*/
             default:
                 return null;
         }
@@ -133,31 +185,61 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     WeatherDataDO objWeatherDO = null;
                     if (cursor != null && cursor.moveToFirst()) {
                         ArrayList<WeatherDataDO> arrWeather = new ArrayList<>();
+                        LinkedHashMap<String, WeatherDataDO> hashWeatherDO = new LinkedHashMap<>();
+                        WeatherDescriptionDO objWeatherDescriptionDO = null;
                         do {
                             objWeatherDO = new WeatherDataDO();
+                            objWeatherDescriptionDO = new WeatherDescriptionDO();
 
-                            objWeatherDO.saveData(cursor.getString(cursor.getColumnIndex(WeatherDataDO.DATE)), WeatherDataDO.WEATHERDATA.TYPE_DATE);
-                            objWeatherDO.saveData(StringUtils.getLong(cursor.getString(cursor.getColumnIndex(WeatherDataDO.DATE_MILLIS))), WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.TEMP_DAY))), WeatherDataDO.WEATHERDATA.TYPE_TEMP);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.TEMP_MINIMUM))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_MIN);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.TEMP_MAXIMUM))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_MAX);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.TEMP_NIGHT))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_NIGHT);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.TEMP_EVE))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_EVE);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.TEMP_MORN))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_MORN);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.PRESSURE))), WeatherDataDO.WEATHERDATA.TYPE_PRESSURE);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.SEA_LEVEL))), WeatherDataDO.WEATHERDATA.TYPE_SEA_LEVEL);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.GRN_LEVEL))), WeatherDataDO.WEATHERDATA.TYPE_GRN_LEVEL);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.HUMIDITY))), WeatherDataDO.WEATHERDATA.TYPE_HUMIDITY);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.WIND))), WeatherDataDO.WEATHERDATA.TYPE_WIND);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.DEG))), WeatherDataDO.WEATHERDATA.TYPE_DEG);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.CLOUDS))), WeatherDataDO.WEATHERDATA.TYPE_CLOUDS);
-                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(WeatherDataDO.RAIN))), WeatherDataDO.WEATHERDATA.TYPE_RAIN);
+                            String location = SSCPConstants.AS_LOCATION_TABLE + SSCPConstants.TABLE_DOT;
+                            objWeatherDO.saveData(cursor.getString(cursor.getColumnIndex(location + LocationDO.CITY_NAME)), WeatherDataDO.WEATHERDATA.TYPE_LOCATION_NAME);
 
-                            arrWeather.add(objWeatherDO);
+                            String weather = SSCPConstants.AS_WEATHER_TABLE + SSCPConstants.TABLE_DOT;
+                            objWeatherDO.saveData(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.WEATHER_ID)), WeatherDataDO.WEATHERDATA.TYPE_WEATHER_ID);
+                            objWeatherDO.saveData(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.DATE)), WeatherDataDO.WEATHERDATA.TYPE_DATE);
+                            objWeatherDO.saveData(StringUtils.getLong(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.DATE_MILLIS))), WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.TEMP_DAY))), WeatherDataDO.WEATHERDATA.TYPE_TEMP);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.TEMP_MINIMUM))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_MIN);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.TEMP_MAXIMUM))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_MAX);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.TEMP_NIGHT))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_NIGHT);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.TEMP_EVE))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_EVE);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.TEMP_MORN))), WeatherDataDO.WEATHERDATA.TYPE_TEMP_MORN);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.PRESSURE))), WeatherDataDO.WEATHERDATA.TYPE_PRESSURE);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.SEA_LEVEL))), WeatherDataDO.WEATHERDATA.TYPE_SEA_LEVEL);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.GRN_LEVEL))), WeatherDataDO.WEATHERDATA.TYPE_GRN_LEVEL);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.HUMIDITY))), WeatherDataDO.WEATHERDATA.TYPE_HUMIDITY);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.WIND))), WeatherDataDO.WEATHERDATA.TYPE_WIND);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.DEG))), WeatherDataDO.WEATHERDATA.TYPE_DEG);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.CLOUDS))), WeatherDataDO.WEATHERDATA.TYPE_CLOUDS);
+                            objWeatherDO.saveData(StringUtils.getDouble(cursor.getString(cursor.getColumnIndex(weather + WeatherDataDO.RAIN))), WeatherDataDO.WEATHERDATA.TYPE_RAIN);
+
+                            String weather_descp = SSCPConstants.AS_WEATHER_DESC_TABLE + SSCPConstants.TABLE_DOT;
+                            objWeatherDescriptionDO.saveData(cursor.getString(cursor.getColumnIndex(weather_descp + WeatherDescriptionDO.WEATHER_ICON_ID)), WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_ICON);
+                            objWeatherDescriptionDO.saveData(cursor.getString(cursor.getColumnIndex(weather_descp + WeatherDescriptionDO.MAIN)), WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_MAIN);
+
+
+                            WeatherDataDO objWeatherDataDO = hashWeatherDO.get((String) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_WEATHER_ID));
+                            if (objWeatherDataDO != null && objWeatherDataDO.arrWeatheDescp.size() > 0){
+                                objWeatherDataDO.arrWeatheDescp.add(objWeatherDescriptionDO);
+                            } else {
+                                objWeatherDO.arrWeatheDescp.add(objWeatherDescriptionDO);
+                                hashWeatherDO.put((String) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_WEATHER_ID), objWeatherDO);
+                            }
                         } while (cursor.moveToNext());
-                        adapterWeather.refresh(arrWeather);
 
-                        setData(arrWeather);
+                        if(hashWeatherDO != null && hashWeatherDO.size() > 0){
+                            for(String key: hashWeatherDO.keySet()){
+                                arrWeather.add(hashWeatherDO.get(key));
+                            }
+                        }
+//                        arrWeather.add(objWeatherDO);
+                        if(arrWeather != null && arrWeather.size() > 0){
+                            setData(arrWeather);
+
+                            ArrayList<WeatherDataDO> arrWeatherDO = (ArrayList<WeatherDataDO>) arrWeather.clone();
+                            arrWeatherDO.remove(0);
+                            adapterWeather.refresh(arrWeatherDO);
+                        }
                     }
                 }
                 break;
@@ -283,10 +365,16 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                 String date = (String) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE);
                 if(date.trim().equalsIgnoreCase(CalendarUtils.getDateinPattern(CalendarUtils.DATE_FORMAT1))) {
                     String weather = "";
-                    if(objWeatherDO.arrWeatheDescp != null && objWeatherDO.arrWeatheDescp.size() > 0)
-                        weather = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION);
+                    if(objWeatherDO.arrWeatheDescp != null && objWeatherDO.arrWeatheDescp.size() > 0){
+                        weather = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_MAIN);
+                        tvWeatherCondition.setText(weather);
 
-                    tvWeatherCondition.setText(weather);
+                        String icon = (String) objWeatherDO.arrWeatheDescp.get(0).getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_ICON);
+                        ivDayWeather.setImageResource(AppConstants.getArtResourceForWeatherCondition(StringUtils.getInt(icon)));
+                    }
+
+                    tvLocation.setText((String) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_LOCATION_NAME));
+
                     tvCurrentTemp.setText(((BaseActivity)getActivity()).degreeFormat.format((double) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_TEMP)));
 
                     String dateToday = CalendarUtils.getDatefromTimeinMilliesPattern((long) objWeatherDO.getData(WeatherDataDO.WEATHERDATA.TYPE_DATE_MILIS), AppConstants.DATE_PATTERN_WEEKNAME_FORMAT)+" ";
@@ -332,6 +420,8 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
         tvDay = (TextView) rootView.findViewById(R.id.tvDay);
         tvMaxTemp = (TextView) rootView.findViewById(R.id.tvMaxTemp);
         tvMinTemp = (TextView) rootView.findViewById(R.id.tvMinTemp);
+
+        ivDayWeather = (ImageView) rootView.findViewById(R.id.ivDayWeather);
 
         rvTodayTemp = (RecyclerView) rootView.findViewById(R.id.rvTodayTemp);
         adapterTodayWeather = new WeatherTodayAdapter(getActivity(), new ArrayList<WeatherTodayDO>());

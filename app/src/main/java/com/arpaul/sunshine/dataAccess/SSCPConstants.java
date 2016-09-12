@@ -17,6 +17,7 @@ public class SSCPConstants {
     public static final String WEATHER_DESCRIP_TABLE_NAME       = "tblWeatherDescrip";
 
     public static final String AS_WEATHER_TABLE                  = " tW";
+    public static final String AS_WEATHER_DESC_TABLE             = " tWD";
     public static final String AS_LOCATION_TABLE                 = " tL";
 
     public static final int DATABASE_VERSION                   = 1;

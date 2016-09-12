@@ -7,8 +7,11 @@ import java.util.ArrayList;
  */
 public class WeatherDataDO extends BaseDO {
 
+    private String location_name = "";
+
     private long dt = 0;
     private String date = "";
+    private String weather_id = "";
     private double temperatureDay = 0;
     private double temperatureMin = 0;
     private double temperatureMax = 0;
@@ -29,6 +32,12 @@ public class WeatherDataDO extends BaseDO {
 
     public void saveData(Object data, WEATHERDATA type){
         switch (type){
+            case TYPE_LOCATION_NAME:
+                location_name = (String) data;
+                break;
+            case TYPE_WEATHER_ID:
+                weather_id = (String) data;
+                break;
             case TYPE_DATE:
                 date = (String) data;
                 break;
@@ -57,9 +66,11 @@ public class WeatherDataDO extends BaseDO {
                 pressure = (double)data;
                 break;
             case TYPE_SEA_LEVEL:
-                sea_level = (double)data;;
+                sea_level = (double)data;
+                break;
             case TYPE_GRN_LEVEL:
                 grnd_level = (double)data;
+                break;
             case TYPE_HUMIDITY:
                 humidity = (double)data;
                 break;
@@ -80,6 +91,10 @@ public class WeatherDataDO extends BaseDO {
 
     public Object getData(WEATHERDATA type){
         switch (type){
+            case TYPE_LOCATION_NAME:
+                return location_name;
+            case TYPE_WEATHER_ID:
+                return weather_id;
             case TYPE_DATE:
                 return date;
             case TYPE_DATE_MILIS:
@@ -147,6 +162,8 @@ public class WeatherDataDO extends BaseDO {
     public static final String TAG_RAIN_3H = "3h";
 
     public enum WEATHERDATA {
+        TYPE_LOCATION_NAME,
+        TYPE_WEATHER_ID,
         TYPE_DATE,
         TYPE_DATE_MILIS,
         TYPE_TEMP,

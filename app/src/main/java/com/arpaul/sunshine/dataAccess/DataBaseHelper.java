@@ -53,6 +53,7 @@ public class DataBaseHelper extends SQLiteOpenHelper {
             " CREATE TABLE IF NOT EXISTS " + SSCPConstants.WEATHER_DESCRIP_TABLE_NAME +
                     " (" + WeatherDescriptionDO.WEATHER_DESCRIP_ID  + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     WeatherDescriptionDO.WEATHER_ID                 + " VARCHAR  NOT NULL, " +
+                    WeatherDescriptionDO.WEATHER_ICON_ID            + " VARCHAR, " +
                     WeatherDescriptionDO.MAIN                       + " VARCHAR, " +
                     WeatherDescriptionDO.DESCRIPTION                + " VARCHAR, " +
                     WeatherDescriptionDO.ICON                       + " VARCHAR);";
