@@ -6,6 +6,7 @@ import java.io.Serializable;
  * Created by ARPaul on 06-04-2016.
  */
 public class WeatherDescriptionDO extends BaseDO {
+    private int id = 0;
     private String main = "";
     private String description = "";
     private String icon = "";
@@ -21,6 +22,9 @@ public class WeatherDescriptionDO extends BaseDO {
             case TYPE_MAIN:
                 main = (String)data;
                 break;
+            case TYPE_WEATHER_ID:
+                id = (int)data;
+                break;
         }
     }
 
@@ -30,17 +34,21 @@ public class WeatherDescriptionDO extends BaseDO {
                 return description;
             case TYPE_ICON:
                 return icon;
+            case TYPE_WEATHER_ID:
+                return id;
             case TYPE_MAIN:
             default:
                 return main;
         }
     }
 
+    public static final String TAG_WEATHER_ID = "id";
     public static final String TAG_MAIN = "main";
     public static final String TAG_DESCRIPTION = "description";
     public static final String TAG_ICON = "icon";
 
     public enum WEATHER_DESC_DATA {
+        TYPE_WEATHER_ID,
         TYPE_DESCRIPTION,
         TYPE_ICON,
         TYPE_MAIN

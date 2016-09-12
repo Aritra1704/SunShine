@@ -125,7 +125,7 @@ public class WeatherLoader extends AsyncTaskLoader {
                             builder = ContentProviderOperation.newInsert(SSCPConstants.CONTENT_URI_WEATHER_DESCRIP);
                             contentValues = new ContentValues();
 
-                            contentValues.put(WeatherDescriptionDO.WEATHER_ID, weatherIdMax);
+                            contentValues.put(WeatherDescriptionDO.WEATHER_ID, (int) objWeatherDescrpDO.getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_WEATHER_ID));
                             contentValues.put(WeatherDescriptionDO.MAIN, (String) objWeatherDescrpDO.getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_MAIN));
                             contentValues.put(WeatherDescriptionDO.DESCRIPTION, (String) objWeatherDescrpDO.getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION));
                             contentValues.put(WeatherDescriptionDO.ICON, (String) objWeatherDescrpDO.getData(WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_ICON));

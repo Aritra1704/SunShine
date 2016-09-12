@@ -112,6 +112,7 @@ public class WeatherParser {
 
                     WeatherDescriptionDO weatherDescp = new WeatherDescriptionDO();
 
+                    weatherDescp.saveData(StringUtils.getInt(weatherObject.getString(WeatherDescriptionDO.TAG_WEATHER_ID)),WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_WEATHER_ID);
                     weatherDescp.saveData(weatherObject.getString(WeatherDescriptionDO.TAG_MAIN),WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_MAIN);
                     weatherDescp.saveData(weatherObject.getString(WeatherDescriptionDO.TAG_DESCRIPTION),WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_DESCRIPTION);
                     weatherDescp.saveData(weatherObject.getString(WeatherDescriptionDO.TAG_ICON),WeatherDescriptionDO.WEATHER_DESC_DATA.TYPE_ICON);
