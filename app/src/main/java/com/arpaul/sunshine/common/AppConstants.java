@@ -18,7 +18,7 @@ public class AppConstants {
 
     public final static String TEXT_NULL                = "null";
 
-    public final static String DAY_PATTERN_WEATHER_LIST = "EEE, MMM dd";
+    public final static String DAY_PATTERN_WEATHER_LIST = "EEEE, MMM dd";
     public final static String DATE_PATTERN_WEATHER_DETAIL = "MMM dd";
     public final static String DATE_PATTERN_WEEKNAME_FORMAT = "EEEE";
 
