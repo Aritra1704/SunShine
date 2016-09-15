@@ -1,5 +1,6 @@
 package com.arpaul.sunshine.activity;
 
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
@@ -11,6 +12,7 @@ import com.arpaul.sunshine.common.AppConstants;
 import com.arpaul.sunshine.dataObjects.WeatherDataDO;
 import com.arpaul.sunshine.dataObjects.WeatherDescriptionDO;
 import com.arpaul.utilitieslib.CalendarUtils;
+import com.arpaul.utilitieslib.ColorUtils;
 import com.arpaul.utilitieslib.StringUtils;
 
 /**
@@ -20,6 +22,7 @@ public class WeatherDetailActivity extends BaseActivity {
 
     private View llWeatherDetailActivity;
     private TextView tvDayTitle, tvDayDate, tvDayTempMax, tvDayTempMin, tvDayHumidity, tvDayWind, tvDayPressure, tvDayWeather;
+    private TextView tvPressure, tvWind, tvHumidity;
     private ImageView ivDayWeather;
 
     private WeatherDataDO objWeatherDataDO;
@@ -56,6 +59,40 @@ public class WeatherDetailActivity extends BaseActivity {
         }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        setTextColor();
+    }
+
+    private void setTextColor(){
+        if(text_pattern == AppConstants.TEXT_PATTERN_DARK){
+            tvDayTitle.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvDayDate.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvDayTempMax.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvDayTempMin.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvDayHumidity.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvDayWind.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvDayPressure.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvDayWeather.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvPressure.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvWind.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+            tvHumidity.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorBlack));
+        } else {
+            tvDayTitle.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvDayDate.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvDayTempMax.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvDayTempMin.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvDayHumidity.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvDayWind.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvDayPressure.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvDayWeather.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvPressure.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvWind.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+            tvHumidity.setTextColor(ColorUtils.getColor(WeatherDetailActivity.this, R.color.colorWhite));
+        }
+    }
+
     private void initialiseControls(){
         tvDayTitle      = (TextView) llWeatherDetailActivity.findViewById(R.id.tvDayTitle);
         tvDayDate       = (TextView) llWeatherDetailActivity.findViewById(R.id.tvDayDate);
@@ -66,6 +103,12 @@ public class WeatherDetailActivity extends BaseActivity {
         tvDayPressure   = (TextView) llWeatherDetailActivity.findViewById(R.id.tvDayPressure);
         tvDayWeather    = (TextView) llWeatherDetailActivity.findViewById(R.id.tvDayWeather);
 
+        tvPressure      = (TextView) llWeatherDetailActivity.findViewById(R.id.tvPressure);
+        tvWind          = (TextView) llWeatherDetailActivity.findViewById(R.id.tvWind);
+        tvHumidity      = (TextView) llWeatherDetailActivity.findViewById(R.id.tvHumidity);
+
         ivDayWeather    = (ImageView) llWeatherDetailActivity.findViewById(R.id.ivDayWeather);
+
+        applyTypeface(getParentView(llWeatherDetailActivity), tfMyriadProRegular , Typeface.NORMAL);
     }
 }

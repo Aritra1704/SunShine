@@ -1,22 +1,34 @@
 package com.arpaul.sunshine.activity;
 
+import android.content.Context;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
+import com.android.internal.util.Predicate;
 import com.arpaul.customalertlibrary.dialogs.CustomDialog;
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.customalertlibrary.popups.statingDialog.PopupListener;
 import com.arpaul.sunshine.R;
+import com.arpaul.sunshine.common.AppConstants;
 import com.arpaul.utilitieslib.CalendarUtils;
 import com.arpaul.utilitieslib.ColorUtils;
 import com.arpaul.utilitieslib.UnCaughtException;
 
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Created by Aritra on 15-08-2016.
@@ -28,6 +40,9 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
 //    private CustomPopup cPopup;
     private CustomDialog cDialog;
     public DecimalFormat degreeFormat;
+    public Typeface tfMyriadProRegular;
+
+    public int text_pattern = 0;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -60,21 +75,38 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
     protected void onResume() {
         super.onResume();
 
+        setupBaseView();
+
+        if(tfMyriadProRegular == null)
+            createTypeFace();
+    }
+
+    private void setupBaseView(){
         String currentTime = CalendarUtils.getDateinPattern(CalendarUtils.TIME_FORMAT);
         String morningTime = "10:00 am";
         String noonTime = "4:00 pm";
         String eveningTime = "8:00 pm";
-        String nightTime = "4:00 am";
+        String nightTime = "11:59 pm";
+        String dawnTime = "4:00 am";
 
-        if(CalendarUtils.getDiffBtwDatesPattern(currentTime, morningTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) < 0){
-            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorMorning));
-        } else if(CalendarUtils.getDiffBtwDatesPattern(currentTime, morningTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) > 0){
-            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorNoon));
-        } else if(CalendarUtils.getDiffBtwDatesPattern(currentTime, noonTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) > 0){
-            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorEvening));
-        } else if(CalendarUtils.getDiffBtwDatesPattern(currentTime, eveningTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) > 0){
+        if(CalendarUtils.getDiffBtwDatesPattern(nightTime, currentTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) < 0){
+            text_pattern = AppConstants.TEXT_PATTERN_LIGHT;
             llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorNight));
-        } else if(CalendarUtils.getDiffBtwDatesPattern(currentTime, nightTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) > 0){
+        }
+        else if(CalendarUtils.getDiffBtwDatesPattern(dawnTime, currentTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) < 0){
+            text_pattern = AppConstants.TEXT_PATTERN_LIGHT;
+            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorNight));
+        }
+        else if(CalendarUtils.getDiffBtwDatesPattern(eveningTime, currentTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) < 0){
+            text_pattern = AppConstants.TEXT_PATTERN_LIGHT;
+            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorEvening));
+        }
+        else if(CalendarUtils.getDiffBtwDatesPattern(noonTime, currentTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) < 0){
+            text_pattern = AppConstants.TEXT_PATTERN_DARK;
+            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorNoon));
+        }
+        else if(CalendarUtils.getDiffBtwDatesPattern(morningTime, currentTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) < 0){
+            text_pattern = AppConstants.TEXT_PATTERN_DARK;
             llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorMorning));
         }
     }
@@ -157,22 +189,6 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
 
         private void showNotNormal(){
             try{
-                /*if (cPopup != null && cPopup.isShowing())
-                    cPopup.dismiss();
-
-                cPopup = new CustomPopup(BaseActivity.this, BaseActivity.this,strTitle,strMessage,
-                        firstBtnName, secondBtnName, from, dislogType);
-
-//                cPopup.setTypeface(tfAdventProMedium,tfAdventProRegular);
-
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        cPopup.show();
-                    }
-                });*/
-
-
                 if (cDialog != null && cDialog.isShowing())
                     cDialog.dismiss();
 
@@ -187,22 +203,6 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
 
         private void showNormal(){
             try{
-                /*if (cPopup != null && cPopup.isShowing())
-                    cPopup.dismiss();
-
-                cPopup = new CustomPopup(BaseActivity.this, BaseActivity.this,strTitle,strMessage,
-                        firstBtnName, secondBtnName, from, CustomPopupType.DIALOG_NORMAL);
-
-//                cPopup.setTypeface(tfAdventProMedium,tfAdventProRegular);
-
-                new Handler().post(new Runnable() {
-                    @Override
-                    public void run() {
-                        cPopup.show();
-                    }
-                });*/
-
-
                 if (cDialog != null && cDialog.isShowing())
                     cDialog.dismiss();
 
@@ -237,8 +237,57 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
         }
     }
 
+    public static <T> Collection<T> filter(Collection<T> col, Predicate<T> predicate) {
+
+        Collection<T> result = new ArrayList<T>();
+        if(col!=null)
+        {
+            for (T element : col) {
+                if (predicate.apply(element)) {
+                    result.add(element);
+                }
+            }
+        }
+        return result;
+    }
+
+    public static ViewGroup getParentView(View v) {
+        ViewGroup vg = null;
+
+        if(v != null)
+            vg = (ViewGroup) v.getRootView();
+
+        return vg;
+    }
+
+    public static void applyTypeface(ViewGroup v, Typeface f, int style) {
+        if(v != null) {
+            int vgCount = v.getChildCount();
+            for(int i=0;i<vgCount;i++) {
+                if(v.getChildAt(i) == null) continue;
+                if(v.getChildAt(i) instanceof ViewGroup)
+                    applyTypeface((ViewGroup)v.getChildAt(i), f, style);
+                else {
+                    View view = v.getChildAt(i);
+                    if(view instanceof TextView)
+                        ((TextView)(view)).setTypeface(f, style);
+                    else if(view instanceof EditText)
+                        ((EditText)(view)).setTypeface(f, style);
+                    else if(view instanceof Button)
+                        ((Button)(view)).setTypeface(f, style);
+                }
+            }
+        }
+    }
+
+    private void createTypeFace(){
+        tfMyriadProRegular   = Typeface.createFromAsset(this.getAssets(),"fonts/Myriad Pro Regular.ttf");
+    }
+
     private void initialiseBaseControls(){
         baseInflater            = 	this.getLayoutInflater();
         llBody                  =   (LinearLayout) findViewById(R.id.llBody);
+
+        createTypeFace();
     }
 }

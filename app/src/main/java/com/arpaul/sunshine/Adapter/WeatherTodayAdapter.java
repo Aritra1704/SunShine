@@ -2,6 +2,7 @@ package com.arpaul.sunshine.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.arpaul.sunshine.R;
+import com.arpaul.sunshine.activity.BaseActivity;
 import com.arpaul.sunshine.activity.WeatherDetailActivity;
 import com.arpaul.sunshine.common.AppConstants;
 import com.arpaul.sunshine.dataObjects.WeatherDataDO;
@@ -50,6 +52,8 @@ public class WeatherTodayAdapter extends RecyclerView.Adapter<WeatherTodayAdapte
 
         holder.tvDayTime.setText(objWeatherDO.dayTime);
         holder.tvDayTemp.setText(objWeatherDO.temperature + "");
+
+        ((BaseActivity)context).applyTypeface(((BaseActivity)context).getParentView(holder.mView), ((BaseActivity) context).tfMyriadProRegular , Typeface.NORMAL);
     }
 
     @Override

@@ -2,6 +2,7 @@ package com.arpaul.sunshine.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Typeface;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -68,6 +69,8 @@ public class WeatherAdapter extends RecyclerView.Adapter<WeatherAdapter.ViewHold
                 context.startActivity(intent);
             }
         });
+
+        ((BaseActivity)context).applyTypeface(((BaseActivity)context).getParentView(holder.mView), ((BaseActivity) context).tfMyriadProRegular , Typeface.NORMAL);
     }
 
     @Override

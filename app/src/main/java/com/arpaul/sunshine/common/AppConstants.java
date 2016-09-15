@@ -22,6 +22,9 @@ public class AppConstants {
     public final static String DATE_PATTERN_WEATHER_DETAIL = "MMM dd";
     public final static String DATE_PATTERN_WEEKNAME_FORMAT = "EEEE";
 
+    public final static int TEXT_PATTERN_LIGHT = 1;
+    public final static int TEXT_PATTERN_DARK = 2;
+
 
     /**
      * Helper method to provide the art resource id according to the weather condition id returned
