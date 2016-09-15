@@ -15,31 +15,31 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:orientation="vertical"
-            android:paddingLeft="@dimen/margin_10">
+            android:paddingLeft="@dimen/margin_40"
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/tvDayTitle"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_25" />
 
             <TextView
                 android:id="@+id/tvDayDate"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textSize="@dimen/textsize_25" />
 
             <TextView
                 android:id="@+id/tvDayTempMax"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/margin_10"
-                android:textSize="@dimen/textsize_40" />
+                android:textSize="@dimen/textsize_50" />
 
             <TextView
                 android:id="@+id/tvDayTempMin"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:paddingLeft="@dimen/margin_10"
                 android:textSize="@dimen/textsize_30" />
@@ -80,14 +80,15 @@
             android:id="@+id/tvHumidity"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2.5"
             android:text="HUMIDTY: "
             android:textSize="@dimen/textsize_25" />
 
         <TextView
             android:id="@+id/tvDayHumidity"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="@dimen/textsize_22" />
     </LinearLayout>
 
@@ -102,14 +103,15 @@
             android:id="@+id/tvWind"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2.5"
             android:text="WIND: "
             android:textSize="@dimen/textsize_25" />
 
         <TextView
             android:id="@+id/tvDayWind"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="@dimen/textsize_22" />
     </LinearLayout>
 
@@ -124,14 +126,15 @@
             android:id="@+id/tvPressure"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
+            android:layout_weight="2.5"
             android:text="PRESSURE: "
             android:textSize="@dimen/textsize_25" />
 
         <TextView
             android:id="@+id/tvDayPressure"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:textSize="@dimen/textsize_22" />
     </LinearLayout>
 </LinearLayout>

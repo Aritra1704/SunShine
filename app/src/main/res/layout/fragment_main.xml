@@ -58,7 +58,9 @@
 
         <FrameLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/margin_10"
+            android:paddingRight="@dimen/margin_10">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -128,14 +130,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="@dimen/margin_10" />
+                    android:padding="@dimen/margin_10"
+                    android:textSize="@dimen/textsize_18" />
 
                 <TextView
                     android:id="@+id/tvTempMorn"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="@dimen/margin_10" />
+                    android:padding="@dimen/margin_10"
+                    android:textSize="@dimen/textsize_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -149,14 +153,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="@dimen/margin_10" />
+                    android:padding="@dimen/margin_10"
+                    android:textSize="@dimen/textsize_18" />
 
                 <TextView
                     android:id="@+id/tvTempDay"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="@dimen/margin_10" />
+                    android:padding="@dimen/margin_10"
+                    android:textSize="@dimen/textsize_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -170,14 +176,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="@dimen/margin_10" />
+                    android:padding="@dimen/margin_10"
+                    android:textSize="@dimen/textsize_18" />
 
                 <TextView
                     android:id="@+id/tvTempEve"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="@dimen/margin_10" />
+                    android:padding="@dimen/margin_10"
+                    android:textSize="@dimen/textsize_18" />
             </LinearLayout>
 
             <LinearLayout
@@ -191,14 +199,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="@dimen/margin_10" />
+                    android:padding="@dimen/margin_10"
+                    android:textSize="@dimen/textsize_18" />
 
                 <TextView
                     android:id="@+id/tvTempNight"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:gravity="center"
-                    android:padding="@dimen/margin_10" />
+                    android:padding="@dimen/margin_10"
+                    android:textSize="@dimen/textsize_18" />
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>
