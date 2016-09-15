@@ -11,6 +11,8 @@ import com.arpaul.customalertlibrary.dialogs.CustomDialog;
 import com.arpaul.customalertlibrary.popups.statingDialog.CustomPopupType;
 import com.arpaul.customalertlibrary.popups.statingDialog.PopupListener;
 import com.arpaul.sunshine.R;
+import com.arpaul.utilitieslib.CalendarUtils;
+import com.arpaul.utilitieslib.ColorUtils;
 import com.arpaul.utilitieslib.UnCaughtException;
 
 import java.math.RoundingMode;
@@ -50,6 +52,31 @@ public abstract class BaseActivity extends AppCompatActivity implements PopupLis
         degreeFormat.setRoundingMode(RoundingMode.CEILING);
         degreeFormat.setMinimumFractionDigits(0);
         degreeFormat.setMaximumFractionDigits(0);
+
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        String currentTime = CalendarUtils.getDateinPattern(CalendarUtils.TIME_FORMAT);
+        String morningTime = "10:00 am";
+        String noonTime = "4:00 pm";
+        String eveningTime = "8:00 pm";
+        String nightTime = "4:00 am";
+
+        if(CalendarUtils.getDiffBtwDatesPattern(currentTime, morningTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) < 0){
+            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorMorning));
+        } else if(CalendarUtils.getDiffBtwDatesPattern(currentTime, morningTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) > 0){
+            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorNoon));
+        } else if(CalendarUtils.getDiffBtwDatesPattern(currentTime, noonTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) > 0){
+            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorEvening));
+        } else if(CalendarUtils.getDiffBtwDatesPattern(currentTime, eveningTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) > 0){
+            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorNight));
+        } else if(CalendarUtils.getDiffBtwDatesPattern(currentTime, nightTime, CalendarUtils.DIFF_TYPE.TYPE_MINUTE, CalendarUtils.TIME_FORMAT) > 0){
+            llBody.setBackgroundColor(ColorUtils.getColor(BaseActivity.this, R.color.colorMorning));
+        }
     }
 
     /**
